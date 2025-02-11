@@ -1,0 +1,33 @@
+.img-wrapper {
+    position: relative;
+}
+
+.card-img-top {
+    width: 80%;
+}
+
+img {
+    aspect-ratio: 6 / 7;
+    object-fit: contain;
+}
+
+.img-edit {
+    position: absolute;
+    top: 10px;
+    right: 12%;
+}
+
+.image-edit-btn {
+    background: #fff;
+    border-radius: 5px;
+    border: 1px solid #2c3e50;
+    color: #7b8a8b;
+}
+
+#image {
+    display: none;
+}
+
+.dropdown-item {
+    cursor: pointer;
+}

@@ -10,4 +10,10 @@ public class ProductController {
 	public String indexAdmin() {
 		return "admin/product/index";
 	}
+
+	@GetMapping("/admin/product/new")
+	public String ProductRegistAdmin() {
+		return "admin/product/regist";
+	}
+
 }
