@@ -7,8 +7,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link th:href="@{/css/common/bootstrap.css}" rel="stylesheet">
 	<link th:href="@{/css/admin/product-registration.css}" rel="stylesheet">
-	<script src="@{/js/common/bootstrap.js}" crossorigin="anonymous"></script>
-	<script src="@{/js/admin/select-image.js}" crossorigin="anonymous"></script>
+	<script th:src="@{/js/common/bootstrap.js}" crossorigin="anonymous"></script>
+	<script th:src="@{/js/admin/select-image.js}" crossorigin="anonymous"></script>
 
 	<title>商品登録 | Spring EC</title>
 </head>
@@ -87,7 +87,7 @@
 			</section>
 		</main>
 		<div th:replace="~{common/footer :: footer_fragment}"></div>
-
+	</div>
 </body>
 
 </html>
