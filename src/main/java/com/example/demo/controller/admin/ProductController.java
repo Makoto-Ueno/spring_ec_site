@@ -12,7 +12,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/admin/product/new")
-	public String ProductRegistAdmin() {
+	public String registView() {
 		return "admin/product/regist";
 	}
 

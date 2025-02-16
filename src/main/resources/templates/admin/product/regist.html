@@ -7,7 +7,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link th:href="@{/css/common/bootstrap.css}" rel="stylesheet">
 	<link th:href="@{/css/admin/product-registration.css}" rel="stylesheet">
-	<script src="@{/common/js/bootstrap.js}" crossorigin="anonymous"></script>
+	<script src="@{/js/common/bootstrap.js}" crossorigin="anonymous"></script>
+	<script src="@{/js/admin/select-image.js}" crossorigin="anonymous"></script>
+
 	<title>商品登録 | Spring EC</title>
 </head>
 
@@ -20,7 +22,7 @@
 					<div class="d-flex justify-content-center">
 						<div class="alert alert-dismissible alert-danger mb-5">
 							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-							"画像のアップロードに失敗しました"
+							画像のアップロードに失敗しました
 						</div>
 					</div>
 					<from action="index.html">
@@ -34,8 +36,7 @@
 										<a class="nav-link dropdown-toggle py-1 px-2 image-edit-btn"
 											data-bs-toggle="dropdown" role="button" aria-haspopup="true"
 											aria-expanded="false">
-											"編集"
-											::after
+											編集
 										</a>
 
 										<div class="dropdown-menu">
@@ -55,54 +56,55 @@
 									<label for="productName" class="form-label">商品名</label>
 									<input id="productName" type="text" class="form-control w-100" placeholder="商品名">
 									<div class="error-text">
-										"
+
 										商品名を登録してください
-										"
+
 									</div>
 								</div>
 
 								<div class="fs-5 mb-4">
 									<div><label for="amount" class="form-label">価格</label></div>
 									<div class="input-group">
-										<span class="input-group-text">\</span>
+										<span class="input-group-text">¥</span>
 										<input id="amount" type="number" class="form-control" aria-label="価格"
 											placeholder="1000">
 										<div class="error-text">
-											"
+
 											価格を登録してください
-											"
+
 										</div>
 									</div>
 								</div>
 
 
 
-							<div class="fs-5 mb-4">
-								<label for="productExplanation" class="form-label">商品説明</label>
-								<textarea class="form-control w-100" id="productExplanation" rows="3"
-									placeholder="商品説明"></textarea>
-								<div class="error-text">
-									"
-									300文字以内で登録してください
-									"
-								</div>
-							</div>
+								<div class="fs-5 mb-4">
+									<label for="productExplanation" class="form-label">商品説明</label>
+									<textarea class="form-control w-100" id="productExplanation" rows="3"
+										placeholder="商品説明"></textarea>
+									<div class="error-text">
 
-							<div class="fs-5 mb-4">
-								<label for="stock" class="form-label">在庫数</label>
-								<input id="stock" type="number" class="form-control w-100" value="1" placeholder="10">
-								<div class="error-text">
-									"
-									在庫数を登録してください
-									"
-								</div>
-							</div>
+										300文字以内で登録してください
 
-							<div class="text-center">
-								<button class="btn btn-dark me-3">登録する</button>
+									</div>
+								</div>
+
+								<div class="fs-5 mb-4">
+									<label for="stock" class="form-label">在庫数</label>
+									<input id="stock" type="number" class="form-control w-100" value="1"
+										placeholder="10">
+									<div class="error-text">
+
+										在庫数を登録してください
+
+									</div>
+								</div>
+
+								<div class="text-center">
+									<button class="btn btn-dark me-3">登録する</button>
+								</div>
 							</div>
 						</div>
-					</div>
 				</div>
 	</div>
 	</form>
