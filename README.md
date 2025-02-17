@@ -1,7 +1,7 @@
 ## MySQL
-- ユーザー名：spring_ec_training
+- ユーザー名：spring_ec
 - パスワード：password
-- データベース：spring_ec_training_db
+- データベース：spring_ec_db
 
 ### テーブル作成SQL
 
