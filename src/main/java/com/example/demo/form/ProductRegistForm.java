@@ -1,8 +1,8 @@
 package com.example.demo.form;
 
-import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -14,10 +14,9 @@ public class ProductRegistForm {
 	@Size(max = 50, message = "50文字以内で登録してください")
 	private String name;
 
-	@NotEmpty(message = "価格を登録してください")
-	@Pattern(regexp = "0123456789", message = "半角数字で入力してください")
+	@NotNull(message = "価格を登録してください")
+	@Digits(integer = 8, fraction = 0, message = "半角数字で入力してください")
 	@Positive(message = "価格をマイナスで登録することはできません")
-	@Max(99999999)
 	private int amount;
 
 	@NotEmpty(message = "商品説明を登録してください")
@@ -27,7 +26,7 @@ public class ProductRegistForm {
 	private String imageUrl;
 	private int status;
 
-	@NotEmpty(message = "在庫数を登録してください")
+	@NotNull(message = "在庫数を登録してください")
 	@Positive(message = "在庫数をマイナスで登録することはできません")
 	private int quantity;
 
