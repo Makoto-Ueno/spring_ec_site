@@ -31,6 +31,7 @@ public class ProductController {
 
 	@GetMapping("/admin/product/new")
 	public String registView(Model model, ProductRegistForm form) {
+		model.addAttribute(form);
 		return "admin/product/regist";
 	}
 
