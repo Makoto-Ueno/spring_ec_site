@@ -48,8 +48,10 @@
 							<div class="col-md-6">
 								<div class="fs-5 mb-4">
 									<label for="productName" class="form-label">商品名</label>
-									<input id="productName" type="text" th:field="*{name}" class="form-control w-100" placeholder="商品名" name="name">
-									<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></p>
+									<input id="productName" type="text" th:field="*{name}" class="form-control w-100"
+										placeholder="商品名" name="name">
+									<p class="error-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+										style="color: red;"></p>
 								</div>
 								<div class="fs-5 mb-4">
 									<div>
@@ -57,25 +59,29 @@
 										<div>
 											<div class="input-group">
 												<span class="input-group-text">¥</span>
-												<input id="amount" type="number" th:field="*{amount}" class="form-control" aria-label="価格"
-													placeholder="1000" name="amount">
-													<p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" style="color: red;"></p>
+												<input id="amount" type="number" th:field="*{amount}"
+													class="form-control" aria-label="価格" name="amount"
+													placeholder="1000">
+												<div class="error-text" th:if="${#fields.hasErrors('amount')}"
+													th:errors="*{amount}" style="color: red;">
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								
 								<div class="fs-5 mb-4">
 									<label for="description" class="form-label">商品説明</label>
-									<textarea class="form-control w-100" th:field="*{description}" id="description" rows="3"
-										placeholder="商品説明" name="description"></textarea>
-										<p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red;"></p>
+									<textarea class="form-control w-100" th:field="*{description}" id="description"
+										rows="3" placeholder="商品説明" name="description"></textarea>
+									<p class="error-text" th:if="${#fields.hasErrors('description')}"
+										th:errors="*{description}" style="color: red;"></p>
 								</div>
 								<div class="fs-5 mb-4">
 									<label for="stock" class="form-label">在庫数</label>
-									<input id="stock" type="number" th:field="*{quantity}" class="form-control w-100" value="1"
-										placeholder="10" name="quantity">
-										<p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" style="color: red;"></p>
+									<input id="stock" type="number" th:field="*{quantity}" class="form-control w-100"
+										value="1" placeholder="10" name="quantity">
+									<p class="error-text" th:if="${#fields.hasErrors('quantity')}"
+										th:errors="*{quantity}" style="color: red;"></p>
 								</div>
 								<div class="text-center">
 									<button class="btn btn-dark me-3">登録する</button>

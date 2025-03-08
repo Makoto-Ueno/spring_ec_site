@@ -39,7 +39,7 @@ public class ProductController {
 	public String register(Model model, @ModelAttribute @Validated ProductRegistForm form,
 			BindingResult bindingResult) {
 
-		if (!bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()) {
 			model.addAttribute(form);
 			return "admin/product/regist";
 		}
@@ -54,6 +54,7 @@ public class ProductController {
 
 		Stock stock = new Stock();
 		stock.setQuantity(form.getQuantity());
+
 		stock.setProductId(form.getProductId());
 		stock.setProduct(product);
 		stockRepository.saveAndFlush(stock);

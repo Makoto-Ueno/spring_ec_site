@@ -1,9 +1,10 @@
 package com.example.demo.form;
 
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 public class ProductRegistForm {
@@ -14,9 +15,10 @@ public class ProductRegistForm {
 	@Size(max = 50, message = "50文字以内で登録してください")
 	private String name;
 
-	@NotNull(message = "価格を登録してください")
-	@Digits(integer = 8, fraction = 0, message = "半角数字で入力してください")
-	@Positive(message = "価格をマイナスで登録することはできません")
+	@NotNull
+	@Min(value = 1, message = "価格を登録してください")
+	@Digits(integer = 8, fraction = 0, message = "価格は￥99,999,999以下で登録してください")
+	@PositiveOrZero(message = "価格をマイナスで登録することはできません")
 	private int amount;
 
 	@NotEmpty(message = "商品説明を登録してください")
@@ -26,9 +28,14 @@ public class ProductRegistForm {
 	private String imageUrl;
 	private int status;
 
-	@NotNull(message = "在庫数を登録してください")
-	@Positive(message = "在庫数をマイナスで登録することはできません")
+	@NotNull
+	@Min(value = 1, message = "在庫数を登録してください")
+	@PositiveOrZero(message = "在庫数をマイナスで登録することはできません")
 	private int quantity;
+
+	// TODO：仮実装
+	private int createUser;
+	private int updateUser;
 
 	public int getProductId() {
 		return productId;
@@ -84,6 +91,22 @@ public class ProductRegistForm {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public int getCreateUser() {
+		return createUser;
+	}
+
+	public void setCreateUser(int createUser) {
+		this.createUser = createUser;
+	}
+
+	public int getUpdateUser() {
+		return updateUser;
+	}
+
+	public void setUpdateUser(int updateUser) {
+		this.updateUser = updateUser;
 	}
 
 }
