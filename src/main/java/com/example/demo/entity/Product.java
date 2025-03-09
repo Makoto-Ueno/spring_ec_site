@@ -36,12 +36,14 @@ public class Product {
 	@Column(nullable = false)
 	private Date createAt;
 
+	// TODO：仮実装
 	@Column(nullable = false)
 	private int createUser;
 
 	@Column(nullable = false)
 	private Date updateAt;
 
+	// TODO：仮実装
 	@Column(nullable = false)
 	private int updateUser;
 
