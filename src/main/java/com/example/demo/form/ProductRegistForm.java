@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
@@ -29,13 +30,9 @@ public class ProductRegistForm {
 	private int status;
 
 	@NotNull
-	@Min(value = 1, message = "在庫数を登録してください")
-	@PositiveOrZero(message = "在庫数をマイナスで登録することはできません")
+	@Min(value = 0, message = "在庫数を登録してください")
+	@Positive(message = "在庫数をマイナスで登録することはできません")
 	private int quantity;
-
-	// TODO：仮実装
-	private int createUser;
-	private int updateUser;
 
 	public int getProductId() {
 		return productId;
@@ -91,22 +88,6 @@ public class ProductRegistForm {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
-	}
-
-	public int getCreateUser() {
-		return createUser;
-	}
-
-	public void setCreateUser(int createUser) {
-		this.createUser = createUser;
-	}
-
-	public int getUpdateUser() {
-		return updateUser;
-	}
-
-	public void setUpdateUser(int updateUser) {
-		this.updateUser = updateUser;
 	}
 
 }
