@@ -32,7 +32,7 @@ public class ProductRegistForm {
 	@NotNull
 	@Min(value = 0, message = "在庫数を登録してください")
 	@Positive(message = "在庫数をマイナスで登録することはできません")
-	private int quantity;
+	private int quantity = 1;
 
 	public int getProductId() {
 		return productId;
