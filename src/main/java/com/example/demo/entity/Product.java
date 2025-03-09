@@ -16,7 +16,6 @@ import jakarta.persistence.PreUpdate;
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
 	private int productId;
 
 	@Column(length = 50, nullable = false)
