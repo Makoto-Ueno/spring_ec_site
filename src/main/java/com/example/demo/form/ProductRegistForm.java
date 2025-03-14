@@ -15,11 +15,11 @@ public class ProductRegistForm {
 	@Size(max = 50, message = "50文字以内で登録してください")
 	private String name;
 
-	@NotNull
-	@Min(value = 1, message = "価格を登録してください")
+	@NotNull(message = "価格を登録してください")
+	@Min(value = 1)
 	@Digits(integer = 8, fraction = 0, message = "価格は￥99,999,999以下で登録してください")
 	@PositiveOrZero(message = "価格をマイナスで登録することはできません")
-	private int amount;
+	private Integer amount;
 
 	@NotEmpty(message = "商品説明を登録してください")
 	@Size(max = 300, message = "300文字以内で登録してください")
@@ -48,11 +48,11 @@ public class ProductRegistForm {
 		this.name = name;
 	}
 
-	public int getAmount() {
+	public Integer getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
 
@@ -80,11 +80,11 @@ public class ProductRegistForm {
 		this.status = status;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 
