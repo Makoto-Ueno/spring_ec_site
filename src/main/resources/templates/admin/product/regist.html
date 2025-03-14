@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link th:href="@{/css/common/bootstrap.css}" rel="stylesheet">
-	<link th:href="@{/css/admin/product-registration.css}" rel="stylesheet">
-	<script th:src="@{/js/common/bootstrap.js}" crossorigin="anonymous"></script>
+<head th:replace="~{common/head :: head_fragment('商品登録',~{::link},~{::script})}">
+    <!-- このページ固有で読み込むCSS/JS -->
+	<link th:href="@{/css/admin/product-registration.css}" rel="stylesheet" />
 	<script th:src="@{/js/admin/select-image.js}" crossorigin="anonymous"></script>
-
-	<title>商品登録 | Spring EC</title>
 </head>
 
 <body>
