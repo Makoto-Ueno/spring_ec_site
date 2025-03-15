@@ -7,7 +7,7 @@ th:fragment="head_fragment(title,links,scripts)">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link th:href="@{/css/common/bootstrap.css}" rel="stylesheet">
-	<script src="@{/common/js/bootstrap.js}" crossorigin="anonymous"></script>
+	<script th:src="@{/js/common/bootstrap.js}" crossorigin="anonymous"></script>
 
 	<th:block th:replace="${links}" />
 	<th:block th:replace="${scripts}" />
