@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{common/head :: head_fragment('商品一覧',~{},~{})}">
+<head th:replace="~{common/head :: head_fragment('商品一覧',~{::link},~{})}">
 	<!-- このページ固有で読み込むCSS/JS -->
 	<link th:href="@{/css/admin/index.css}" rel="stylesheet" />
 </head>
