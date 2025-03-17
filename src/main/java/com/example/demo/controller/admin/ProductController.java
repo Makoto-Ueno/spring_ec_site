@@ -25,7 +25,8 @@ public class ProductController {
 	private StockRepository stockRepository;
 
 	@GetMapping("/admin")
-	public String indexAdmin() {
+	public String indexAdmin(Model model) {
+		model.addAttribute("producs", productRepository.findAll());
 		return "admin/product/index";
 	}
 
