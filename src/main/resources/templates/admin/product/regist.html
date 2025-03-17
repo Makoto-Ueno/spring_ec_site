@@ -13,12 +13,6 @@
 		<main>
 			<section class="py-5">
 				<div class="container px-3 px-lg-5 mb-5">
-					<div class="d-flex justify-content-center">
-						<div class="alert alert-dismissible alert-danger mb-5">
-							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-							画像のアップロードに失敗しました
-						</div>
-					</div>
 					<form action="/admin/product/new" method="post" th:object="${productRegistForm}">
 						<div class="row gx-4 gx-lg-5 align-items-center">
 							<div class="col-md-6 text-center mb-5">
