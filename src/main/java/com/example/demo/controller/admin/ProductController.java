@@ -1,6 +1,9 @@
 package com.example.demo.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +28,10 @@ public class ProductController {
 	private StockRepository stockRepository;
 
 	@GetMapping("/admin")
-	public String indexAdmin(Model model) {
+	public String indexAdmin(Model model, @PageableDefault(page = 0, size = 20) Pageable pageable) {
+		Page<Product> productsPage = productRepository.findAll(pageable);
+		model.addAttribute("page", productsPage);
+		model.addAttribute("producs", productsPage.getContent());
 		model.addAttribute("producs", productRepository.findAll());
 		return "admin/product/index";
 	}
