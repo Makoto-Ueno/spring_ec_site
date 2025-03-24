@@ -45,7 +45,7 @@
 		<!-- ページネーション部分 -->
 		<div>
 			<ul class="pagination mb-5">
-				<li class="page-item">
+				<li class="page-item"　th:classappend="${page.first} ? ' disabled' : ''">
 					<a class="page-link" th:href="@{/admin(page = ${page.number-1})}">&laquo;</a>
 				</li>
 				<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
@@ -53,7 +53,7 @@
 					<a class="page-link" th:href="@{/admin(page = ${i})}">[[${i+1}]]
 					</a>
 				</li>
-				<li class="page-item">
+				<li class="page-item"　　th:classappend="${page.last} ? ' disabled' : ''">
 					<a class="page-link" th:href="@{/admin(page = ${page.number+1})}">&raquo;</a>
 				</li>
 			</ul>
