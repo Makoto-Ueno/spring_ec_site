@@ -31,8 +31,7 @@ public class ProductController {
 	public String indexAdmin(Model model, @PageableDefault(page = 0, size = 20) Pageable pageable) {
 		Page<Product> productsPage = productRepository.findAll(pageable);
 		model.addAttribute("page", productsPage);
-		model.addAttribute("producs", productsPage.getContent());
-		model.addAttribute("producs", productRepository.findAll());
+		model.addAttribute("products", productsPage.getContent());
 		return "admin/product/index";
 	}
 

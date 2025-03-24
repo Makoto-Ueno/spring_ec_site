@@ -12,7 +12,7 @@
 	<!-- --------------------------- -->
 	<!-- main -->
 	<main>
-		<div class="d-flex justify-content-center">
+		<div th:if="${not #lists.isEmpty(products)}" class="d-flex justify-content-center">
 			<div class="alert alert-dismissible alert-success mt-5">
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 				商品を登録しました
@@ -22,8 +22,9 @@
 		<div class="px-5 py-5">
 			<div class="container-fluid">
 				<div class="row">
-					<!-- <h4 class="text-center">現在商品が登録されていません。<br />商品登録画面から商品を登録してください。</h4> -->
-					<div th:each="product : ${producs}" class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3">
+					<h4 th:if="${#lists.isEmpty(products)}" class="text-center">
+						現在商品が登録されていません。<br />商品登録画面から商品を登録してください。</h4>
+					<div th:each="product : ${products}" class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3">
 						<a class="text-not-decoration" href="product-change.html">
 							<div class="card">
 								<img class="bg-light" th:src="@{/img/no_image.png}" alt="">
@@ -44,22 +45,16 @@
 		<!-- ページネーション部分 -->
 		<div>
 			<ul class="pagination mb-5">
-				<li class="page-item disabled" style="display:inline;">
-					<span th:if="${page.first}">&lt;&lt;前</span>
-					<a class="page-link" th:if="${!page.first}"
-						th:href="@{/product/list(page = ${page.number} - 1)}">&lt;&lt;前</a>
+				<li class="page-item disabled">
+					<a class="page-link" th:href="@{/product/list(page = ${page.number} - 1)}">&laquo;</a>
 				</li>
-				<li class="page-item active" th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
-					style="display:inline; margin-left:10px;">
-					<span th:if="${i} == ${page.number}" th:text="${i + 1}"></span>
-					<a class="page-link" th:if="${i} != ${page.number}" th:href="@{/product/list(page = ${i})}">
-						<span th:text="${i+1}"></span>
+				<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:classappend="${i} == ${page.number} ? 'active' : ''">
+					<a class="page-link" th:href="@{/product/list(page = ${i})}">[[${i+1}]]
 					</a>
 				</li>
-				<li class="page-item" style="display:inline; margin-left:10px;">
-					<span th:if="${page.last}">次&gt;&gt;</span>
+				<li class="page-item">
 					<a class="page-link" th:if="${!page.last}"
-						th:href="@{/product/list(page = (${page.number} + 1))}">次&gt;&gt;</a>
+						th:href="@{/product/list(page = (${page.number} + 1))}">&raquo;</a>
 				</li>
 			</ul>
 		</div>
