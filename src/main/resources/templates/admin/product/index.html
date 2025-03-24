@@ -45,16 +45,16 @@
 		<!-- ページネーション部分 -->
 		<div>
 			<ul class="pagination mb-5">
-				<li class="page-item disabled">
-					<a class="page-link" th:href="@{/product/list(page = ${page.number} - 1)}">&laquo;</a>
+				<li class="page-item">
+					<a class="page-link" th:href="@{/admin(page = ${page.number-1})}">&laquo;</a>
 				</li>
-				<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" th:classappend="${i} == ${page.number} ? 'active' : ''">
-					<a class="page-link" th:href="@{/product/list(page = ${i})}">[[${i+1}]]
+				<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+					th:classappend="${i} == ${page.number} ? 'active' : ''">
+					<a class="page-link" th:href="@{/admin(page = ${i})}">[[${i+1}]]
 					</a>
 				</li>
 				<li class="page-item">
-					<a class="page-link" th:if="${!page.last}"
-						th:href="@{/product/list(page = (${page.number} + 1))}">&raquo;</a>
+					<a class="page-link" th:href="@{/admin(page = ${page.number+1})}">&raquo;</a>
 				</li>
 			</ul>
 		</div>
