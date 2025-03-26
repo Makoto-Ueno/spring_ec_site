@@ -44,7 +44,7 @@
 		</div>
 		<!-- ページネーション部分 -->
 		<div>
-			<ul class="pagination mb-5">
+			<ul th:if="${not #lists.isEmpty(products)}" class="pagination mb-5">
 				<li class="page-item"　th:classappend="${page.first} ? ' disabled' : ''">
 					<a class="page-link" th:href="@{/admin(page = ${page.number-1})}">&laquo;</a>
 				</li>
