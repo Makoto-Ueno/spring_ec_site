@@ -12,7 +12,7 @@
 	<!-- --------------------------- -->
 	<!-- main -->
 	<main>
-		<div th:if="${not #lists.isEmpty(products)}" class="d-flex justify-content-center">
+		<div th:if="${successed}" class="d-flex justify-content-center">
 			<div class="alert alert-dismissible alert-success mt-5">
 				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 				商品を登録しました
@@ -25,7 +25,7 @@
 					<h4 th:if="${#lists.isEmpty(products)}" class="text-center">
 						現在商品が登録されていません。<br />商品登録画面から商品を登録してください。</h4>
 					<div th:each="product : ${products}" class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3">
-						<a class="text-not-decoration" th:href="@{/admin/product/{id}(id=${products.id})}">
+						<a class="text-not-decoration" th:href="@{/admin/product/{id}(id=${product.productId})}">
 							<div class="card">
 								<img class="bg-light" th:src="@{/img/no_image.png}" alt="">
 								<div class=" card-body">

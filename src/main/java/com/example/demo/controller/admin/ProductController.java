@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Product;
 import com.example.demo.entity.Stock;
@@ -42,8 +43,8 @@ public class ProductController {
 	}
 
 	@PostMapping("/admin/product/new")
-	public String register(Model model, @ModelAttribute @Validated ProductRegistForm form,
-			BindingResult bindingResult) {
+	public String register(Model model, @ModelAttribute @Validated ProductRegistForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute(form);
@@ -64,6 +65,8 @@ public class ProductController {
 		stock.setProductId(form.getProductId());
 		stock.setProduct(product);
 		stockRepository.saveAndFlush(stock);
+
+		redirectAttributes.addFlashAttribute("successed", true);
 
 		return "redirect:/admin";
 	}
