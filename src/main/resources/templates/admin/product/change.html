@@ -13,22 +13,22 @@
 		<main>
 			<section class="py-5">
 				<div class="container px-3 px-lg-5 mb-5">
-					<div class="d-flex justify-content-center">
+					<!--div class="d-flex justify-content-center">
 						<div class="alert alert-dismissible alert-success mb-5">
 							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 							商品情報を変更しました
-						</div>
-						<!-- <div class="alert alert-dismissible alert-danger mb-5">
+						</div >
+						 <div class="alert alert-dismissible alert-danger mb-5">
 		                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 		                    画像のアップロードに失敗しました
-		                </div> -->
-					</div>
-					<form action="" id="edit-form">
+		                </div>
+					</div-->
+					<form action="/admin/product/change" method="post" th:object="${productRegistForm}" id="edit-form">
 						<div class="row gx-4 gx-lg-5 align-items-center">
 							<div class="col-md-6 text-center mb-5">
 								<div class="mb-md-0 img-wrapper">
-									<img id="output" class="card-img-top bg-light"
-										src="../../common/images/no_image.png" alt="..." />
+									<img id="output" class="card-img-top bg-light" th:src="@{/img/no_image.png}"
+										alt="NO IMAGE" />
 									<div class="img-edit">
 										<a class="nav-link dropdown-toggle py-1 px-2 image-edit-btn"
 											data-bs-toggle="dropdown" role="button" aria-haspopup="true"
@@ -44,15 +44,13 @@
 								</div>
 							</div>
 							<div class="col-md-6">
-								<span class="badge bg-danger mb-3">販売停止中</span>
+								<!--span class="badge bg-danger mb-3">販売停止中</span-->
 
 								<div class="fs-5 mb-4">
 									<label for="productName" class="form-label">商品名</label>
-									<input id="productName" type="text" class="form-control w-100" placeholder="商品名"
-										value="商品名">
-									<div class="error-text">
-										商品名を登録してください
-									</div>
+									<input type="text" th:field="*{name}" class="form-control w-100" placeholder="商品名">
+									<p class="error-text" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+										style="color: red;"></p>
 								</div>
 								<div class="fs-5 mb-4">
 									<div>
@@ -60,29 +58,28 @@
 										<div>
 											<div class="input-group">
 												<span class="input-group-text">¥</span>
-												<input id="amount" type="number" class="form-control" value="1000"
-													aria-label="価格">
-												<div class="error-text">
-													価格を登録してください
+												<input type="number" th:field="*{amount}" class="form-control"
+													aria-label="価格" placeholder="1000">
+												<div class="error-text" th:if="${#fields.hasErrors('amount')}"
+													th:errors="*{amount}" style="color: red;">
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="fs-5 mb-4">
-									<label for="productExplanation" class="form-label">商品説明</label>
-									<textarea class="form-control w-100" id="productExplanation"
-										rows="3">商品説明商品説明商品説明商品説明商品説明商品説明商品説明</textarea>
-									<div class="error-text">
-										300文字以内で登録してください
-									</div>
+									<label for="description" class="form-label">商品説明</label>
+									<textarea class="form-control w-100" th:field="*{description}" rows="3"
+										placeholder="商品説明"></textarea>
+									<p class="error-text" th:if="${#fields.hasErrors('description')}"
+										th:errors="*{description}" style="color: red;"></p>
 								</div>
 								<div class="fs-5 mb-4">
 									<label for="stock" class="form-label">在庫数</label>
-									<input id="stock" type="number" class="form-control w-100" value="1000">
-									<div class="error-text">
-										在庫数をマイナスにすることはできません
-									</div>
+									<input type="number" th:field="*{quantity}" class="form-control w-100"
+										placeholder="1">
+									<p class="error-text" th:if="${#fields.hasErrors('quantity')}"
+										th:errors="*{quantity}" style="color: red;"></p>
 								</div>
 								<div class="text-center">
 									<button class="btn btn-dark me-3">変更する</button>
