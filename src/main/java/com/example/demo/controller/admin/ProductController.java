@@ -71,4 +71,10 @@ public class ProductController {
 		return "redirect:/admin";
 	}
 
+	@GetMapping("/admin/product/{id}")
+	public String changeView(Model model, ProductRegistForm form) {
+		model.addAttribute(form);
+		return "admin/product/change";
+	}
+
 }
