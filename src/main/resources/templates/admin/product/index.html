@@ -9,10 +9,58 @@
 <body>
 
 	<div th:replace="~{common/header :: header_fragment}"></div>
-
-	<h1></h1>
-
-	<div th:replace="~{common/footer :: footer_fragment}"></div>
+	<!-- --------------------------- -->
+	<!-- main -->
+	<main>
+		<div th:if="${successed}" class="d-flex justify-content-center">
+			<div class="alert alert-dismissible alert-success mt-5">
+				<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+				商品を登録しました
+			</div>
+		</div>
+		<h3 class="text-center mt-5">商品一覧</h3>
+		<div class="px-5 py-5">
+			<div class="container-fluid">
+				<div class="row">
+					<h4 th:if="${#lists.isEmpty(products)}" class="text-center">
+						現在商品が登録されていません。<br />商品登録画面から商品を登録してください。</h4>
+					<div th:each="product : ${products}" class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3">
+						<a class="text-not-decoration" th:href="@{/admin/product/{id}(id=${product.productId})}">
+							<div class="card">
+								<img class="bg-light" th:src="@{/img/no_image.png}" alt="">
+								<div class=" card-body">
+									<h5 class="card-title">[[${product.name}]]</h5>
+									
+									<p th:if="${product.status} == 1" 　class="card-text text-danger">現在販売を停止しています</p>
+									<p th:if="${product.status} != 1 and ${product.stock.quantity} == 0"
+										　class="card-text text-danger">現在在庫切れです</p>
+									<p th:if="${product.status} != 1 and ${product.stock.quantity} != 0" class="card-text">¥[[${product.amount}]]
+									</p>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- ページネーション部分 -->
+		<div>
+			<ul th:if="${not #lists.isEmpty(products)}" class="pagination mb-5">
+				<li class="page-item"　th:classappend="${page.first} ? ' disabled' : ''">
+					<a class="page-link" th:href="@{/admin(page = ${page.number-1})}">&laquo;</a>
+				</li>
+				<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+					th:classappend="${i} == ${page.number} ? 'active' : ''">
+					<a class="page-link" th:href="@{/admin(page = ${i})}">[[${i+1}]]
+					</a>
+				</li>
+				<li class="page-item"　　th:classappend="${page.last} ? ' disabled' : ''">
+					<a class="page-link" th:href="@{/admin(page = ${page.number+1})}">&raquo;</a>
+				</li>
+			</ul>
+		</div>
+		<!-- ページネーション部分 -->
+		<div th:replace="~{common/footer :: footer_fragment}"></div>
 
 </body>
 

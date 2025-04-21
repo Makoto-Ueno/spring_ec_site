@@ -1,6 +1,9 @@
 package com.example.demo.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Product;
 import com.example.demo.entity.Stock;
@@ -25,7 +29,10 @@ public class ProductController {
 	private StockRepository stockRepository;
 
 	@GetMapping("/admin")
-	public String indexAdmin() {
+	public String indexAdmin(Model model, @PageableDefault(page = 0, size = 20) Pageable pageable) {
+		Page<Product> productsPage = productRepository.findAll(pageable);
+		model.addAttribute("page", productsPage);
+		model.addAttribute("products", productsPage.getContent());
 		return "admin/product/index";
 	}
 
@@ -36,8 +43,8 @@ public class ProductController {
 	}
 
 	@PostMapping("/admin/product/new")
-	public String register(Model model, @ModelAttribute @Validated ProductRegistForm form,
-			BindingResult bindingResult) {
+	public String register(Model model, @ModelAttribute @Validated ProductRegistForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute(form);
@@ -58,6 +65,8 @@ public class ProductController {
 		stock.setProductId(form.getProductId());
 		stock.setProduct(product);
 		stockRepository.saveAndFlush(stock);
+
+		redirectAttributes.addFlashAttribute("successed", true);
 
 		return "redirect:/admin";
 	}
