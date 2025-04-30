@@ -23,7 +23,7 @@
 		                    画像のアップロードに失敗しました
 		                </div>
 					</div-->
-					<form action="/admin/product/change" method="post" th:object="${productRegistForm}" id="edit-form">
+					<form th:action="@{/admin/product/{id}(id = ${productRegistForm.productId})}" method="post" th:object="${productRegistForm}" id="edit-form">
 						<div class="row gx-4 gx-lg-5 align-items-center">
 							<div class="col-md-6 text-center mb-5">
 								<div class="mb-md-0 img-wrapper">

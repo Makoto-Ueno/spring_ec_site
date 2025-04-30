@@ -102,7 +102,7 @@ public class ProductController {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute(form);
-			return "admin/product/{id}";
+			return "admin/product/change";
 		}
 
 		Product product = new Product();
@@ -122,7 +122,7 @@ public class ProductController {
 
 		redirectAttributes.addFlashAttribute("successed", true);
 
-		return "redirect:/change";
+		return "redirect:/admin/product/{id}";
 	}
 
 }
