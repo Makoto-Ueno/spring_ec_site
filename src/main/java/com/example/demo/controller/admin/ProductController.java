@@ -98,29 +98,30 @@ public class ProductController {
 
 	@PostMapping("/admin/product/{id}")
 	public String change(Model model, @ModelAttribute @Validated ProductRegistForm form, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, @PathVariable int id) {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute(form);
 			return "admin/product/change";
 		}
 
-		Product product = new Product();
+		Optional<Product> productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			// TODO:商品がなかった時の処理
+		}
+		Product product = productOpt.get();
 		product.setName(form.getName());
 		product.setAmount(form.getAmount());
 		product.setDescription(form.getDescription());
 		product.setImageUrl(form.getImageUrl());
 		product.setStatus(form.getStatus());
+		// TODO:UpdadeUserを実装する
 		productRepository.saveAndFlush(product);
 
-		Stock stock = new Stock();
+		Stock stock = product.getStock();
 		stock.setQuantity(form.getQuantity());
-
-		stock.setProductId(form.getProductId());
 		stock.setProduct(product);
 		stockRepository.saveAndFlush(stock);
-
-		redirectAttributes.addFlashAttribute("successed", true);
 
 		return "redirect:/admin/product/{id}";
 	}
