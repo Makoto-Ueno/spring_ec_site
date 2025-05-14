@@ -123,6 +123,42 @@ public class ProductController {
 		stock.setProduct(product);
 		stockRepository.saveAndFlush(stock);
 
+		redirectAttributes.addFlashAttribute("changeSuccessed", true);
+
+		return "redirect:/admin/product/{id}";
+	}
+
+	@PostMapping("/admin/product/{id}/stop")
+	public String changeStatus(Model model, @ModelAttribute ProductRegistForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes, @PathVariable int id) {
+		Optional<Product> productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			// TODO:商品がなかった時の処理
+		}
+		Product product = productOpt.get();
+		product.setStatus(1);
+		// TODO:UpdadeUserを実装する
+
+		productRepository.saveAndFlush(product);
+
+		redirectAttributes.addFlashAttribute("statusStpoSuccessed", true);
+		return "redirect:/admin/product/{id}";
+	}
+
+	@PostMapping("/admin/product/{id}/restart")
+	public String restartStatus(Model model, @ModelAttribute ProductRegistForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes, @PathVariable int id) {
+		Optional<Product> productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			// TODO:商品がなかった時の処理
+		}
+		Product product = productOpt.get();
+		product.setStatus(0);
+		// TODO:UpdadeUserを実装する
+
+		productRepository.saveAndFlush(product);
+
+		redirectAttributes.addFlashAttribute("statusStartSuccessed", true);
 		return "redirect:/admin/product/{id}";
 	}
 

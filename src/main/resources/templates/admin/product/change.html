@@ -23,7 +23,8 @@
 		                    画像のアップロードに失敗しました
 		                </div>
 					</div-->
-					<form th:action="@{/admin/product/{id}(id = ${productRegistForm.productId})}" method="post" th:object="${productRegistForm}" id="edit-form">
+					<form th:action="@{/admin/product/{id}(id = ${productRegistForm.productId})}" method="post"
+						th:object="${productRegistForm}" id="edit-form">
 						<div class="row gx-4 gx-lg-5 align-items-center">
 							<div class="col-md-6 text-center mb-5">
 								<div class="mb-md-0 img-wrapper">
@@ -83,12 +84,16 @@
 								</div>
 								<div class="text-center">
 									<button class="btn btn-dark me-3">変更する</button>
-									<button class="btn btn-danger">販売停止</button>
-									<!-- <button class="btn btn-info">販売再開</button> -->
+									<button class="btn btn-danger" form="form-stop" >販売停止</button>
+									<button class="btn btn-info" form="form-restart">販売再開</button>
 								</div>
 							</div>
 						</div>
 					</form>
+					<form id="form-stop" th:action="@{/admin/product/{id}/stop(id=${productRegistForm.productId})}"
+						method="post"></form>
+						<form id="form-restart" th:action="@{/admin/product/{id}/restart(id=${productRegistForm.productId})}"
+							method="post"></form>
 				</div>
 			</section>
 		</main>
