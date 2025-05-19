@@ -99,8 +99,11 @@ public class ProductController {
 	@PostMapping("/admin/product/{id}")
 	public String change(Model model, @ModelAttribute @Validated ProductRegistForm form, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes, @PathVariable int id) {
+		System.out.println("ID:" + id);
+		System.out.println("productID:" + form.getProductId());
 
 		if (bindingResult.hasErrors()) {
+			form.setProductId(id);
 			model.addAttribute(form);
 			return "admin/product/change";
 		}
@@ -108,6 +111,7 @@ public class ProductController {
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
 			// TODO:商品がなかった時の処理
+			return "";
 		}
 		Product product = productOpt.get();
 		product.setName(form.getName());
@@ -158,7 +162,7 @@ public class ProductController {
 
 		productRepository.saveAndFlush(product);
 
-		redirectAttributes.addFlashAttribute("statusStartSuccessed", true);
+		redirectAttributes.addFlashAttribute("restartSuccessed", true);
 		return "redirect:/admin/product/{id}";
 	}
 

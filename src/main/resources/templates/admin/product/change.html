@@ -13,16 +13,24 @@
 		<main>
 			<section class="py-5">
 				<div class="container px-3 px-lg-5 mb-5">
-					<!--div class="d-flex justify-content-center">
-						<div class="alert alert-dismissible alert-success mb-5">
+					<div class="d-flex justify-content-center">
+						<div th:if="${changeSuccessed}" class="alert alert-dismissible alert-success mb-5">
 							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 							商品情報を変更しました
-						</div >
-						 <div class="alert alert-dismissible alert-danger mb-5">
+						</div>
+						<div th:if="${statusStpoSuccessed}" class="alert alert-dismissible alert-success mb-5">
+							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+							商品を販売停止にしました
+						</div>
+						<div th:if="${restartSuccessed}" class="alert alert-dismissible alert-success mb-5">
+							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+							商品を販売再開しました
+						</div>
+						<!-- <div class="alert alert-dismissible alert-danger mb-5">
 		                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 		                    画像のアップロードに失敗しました
-		                </div>
-					</div-->
+		                </div-->
+					</div>
 					<form th:action="@{/admin/product/{id}(id = ${productRegistForm.productId})}" method="post"
 						th:object="${productRegistForm}" id="edit-form">
 						<div class="row gx-4 gx-lg-5 align-items-center">
@@ -45,7 +53,7 @@
 								</div>
 							</div>
 							<div class="col-md-6">
-								<!--span class="badge bg-danger mb-3">販売停止中</span-->
+								<span th:if="*{status} == 1" class="badge bg-danger mb-3">販売停止中</span>
 
 								<div class="fs-5 mb-4">
 									<label for="productName" class="form-label">商品名</label>
@@ -84,16 +92,18 @@
 								</div>
 								<div class="text-center">
 									<button class="btn btn-dark me-3">変更する</button>
-									<button class="btn btn-danger" form="form-stop" >販売停止</button>
-									<button class="btn btn-info" form="form-restart">販売再開</button>
+									<button th:if="*{status} == 0" class="btn btn-danger" form="form-stop">販売停止</button>
+									<button th:if="*{status} == 1" class="btn btn-info"
+										form="form-restart">販売再開</button>
 								</div>
 							</div>
 						</div>
 					</form>
 					<form id="form-stop" th:action="@{/admin/product/{id}/stop(id=${productRegistForm.productId})}"
 						method="post"></form>
-						<form id="form-restart" th:action="@{/admin/product/{id}/restart(id=${productRegistForm.productId})}"
-							method="post"></form>
+					<form id="form-restart"
+						th:action="@{/admin/product/{id}/restart(id=${productRegistForm.productId})}" method="post">
+					</form>
 				</div>
 			</section>
 		</main>
