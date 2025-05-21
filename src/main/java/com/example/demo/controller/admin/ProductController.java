@@ -1,5 +1,7 @@
 package com.example.demo.controller.admin;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -69,6 +72,96 @@ public class ProductController {
 		redirectAttributes.addFlashAttribute("successed", true);
 
 		return "redirect:/admin";
+	}
+
+	@GetMapping("/admin/product/{id}")
+	public String changeView(Model model, @PathVariable int id) {
+		Optional<Product> productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			// TODO:商品がなかった時の処理
+		}
+		Product product = productOpt.get();
+		ProductRegistForm form = new ProductRegistForm();
+		form.setProductId(id);
+		form.setName(product.getName());
+		form.setAmount(product.getAmount());
+		form.setDescription(product.getDescription());
+		form.setImageUrl(product.getImageUrl());
+		form.setStatus(product.getStatus());
+
+		Stock stock = product.getStock();
+		form.setQuantity(stock.getQuantity());
+
+		model.addAttribute(form);
+		return "admin/product/change";
+	}
+
+	@PostMapping("/admin/product/{id}")
+	public String change(Model model, @ModelAttribute @Validated ProductRegistForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes, @PathVariable int id) {
+
+		if (bindingResult.hasErrors()) {
+			form.setProductId(id);
+			model.addAttribute(form);
+			return "admin/product/change";
+		}
+
+		Optional<Product> productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			// TODO:商品がなかった時の処理
+			return "";
+		}
+		Product product = productOpt.get();
+		product.setName(form.getName());
+		product.setAmount(form.getAmount());
+		product.setDescription(form.getDescription());
+		product.setImageUrl(form.getImageUrl());
+		product.setStatus(form.getStatus());
+		// TODO:UpdadeUserを実装する
+		productRepository.saveAndFlush(product);
+
+		Stock stock = product.getStock();
+		stock.setQuantity(form.getQuantity());
+		stock.setProduct(product);
+		stockRepository.saveAndFlush(stock);
+
+		redirectAttributes.addFlashAttribute("changeSuccessed", true);
+
+		return "redirect:/admin/product/{id}";
+	}
+
+	@PostMapping("/admin/product/{id}/stop")
+	public String changeStatus(Model model, @ModelAttribute ProductRegistForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes, @PathVariable int id) {
+		Optional<Product> productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			// TODO:商品がなかった時の処理
+		}
+		Product product = productOpt.get();
+		product.setStatus(1);
+		// TODO:UpdadeUserを実装する
+
+		productRepository.saveAndFlush(product);
+
+		redirectAttributes.addFlashAttribute("statusStpoSuccessed", true);
+		return "redirect:/admin/product/{id}";
+	}
+
+	@PostMapping("/admin/product/{id}/restart")
+	public String restartStatus(Model model, @ModelAttribute ProductRegistForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes, @PathVariable int id) {
+		Optional<Product> productOpt = productRepository.findById(id);
+		if (productOpt.isEmpty()) {
+			// TODO:商品がなかった時の処理
+		}
+		Product product = productOpt.get();
+		product.setStatus(0);
+		// TODO:UpdadeUserを実装する
+
+		productRepository.saveAndFlush(product);
+
+		redirectAttributes.addFlashAttribute("restartSuccessed", true);
+		return "redirect:/admin/product/{id}";
 	}
 
 }
