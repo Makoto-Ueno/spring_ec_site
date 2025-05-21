@@ -99,8 +99,6 @@ public class ProductController {
 	@PostMapping("/admin/product/{id}")
 	public String change(Model model, @ModelAttribute @Validated ProductRegistForm form, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes, @PathVariable int id) {
-		System.out.println("ID:" + id);
-		System.out.println("productID:" + form.getProductId());
 
 		if (bindingResult.hasErrors()) {
 			form.setProductId(id);
