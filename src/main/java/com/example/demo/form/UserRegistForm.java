@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class UserRegistForm {
-	private int id;
+	private int userId;
 
 	@NotEmpty(message = "メールアドレスを入力してください")
 	@Email(message = "メールアドレス形式で入力してください")
@@ -22,12 +22,12 @@ public class UserRegistForm {
 
 	private int type;
 
-	public int getId() {
-		return id;
+	public int getUserId() {
+		return userId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getMail() {
