@@ -58,6 +58,7 @@ public class UserController {
 
 		userRepository.saveAndFlush(user);
 		return "redirect:/admin";
+		// TODO:ログイン画面作成後トップページに戻る
 
 	}
 
