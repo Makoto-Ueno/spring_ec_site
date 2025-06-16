@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id")
 	private int id;
 
 	@Column(nullable = false)
@@ -23,10 +24,10 @@ public class User {
 	@Column(nullable = false)
 	private int type;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "create_at")
 	private Date createAt;
 
-	@Column(nullable = false)
+	@Column(nullable = false, name = "update_at")
 	private Date updateAt;
 
 	public int getId() {
