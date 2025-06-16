@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{common/head :: head_fragment('新規登録',~{},~{})}">
+<head th:replace="~{common/head :: head_fragment('新規登録',~{},~{::script})}">
+	<script th:src="@{/js/common/password-mask.js}" crossorigin="anonymous"></script>
 </head>
 
 <body>
