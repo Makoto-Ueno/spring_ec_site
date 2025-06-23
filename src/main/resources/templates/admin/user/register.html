@@ -15,7 +15,6 @@
 						action="/admin/register" method="post" th:object="${userRegistForm}">
 						<fieldset>
 							<div>
-
 								<label for="mail" class="form-label mt-4">メールアドレス</label>
 								<input type="text" th:field="*{mail}" class="form-control w-100"
 									placeholder="spring@gmail.com">
@@ -42,16 +41,15 @@
 								<div class="error-text" th:if="${#fields.hasErrors('passwordConfirm')}"
 									th:errors="*{passwordConfirm}" style="color: red;"></div>
 							</div>
+							<div class="d-grid mt-5 mb-4">
+								<button class="btn btn-lg btn-secondary">新規登録</button>
+							</div>
+						</fieldset>
+					</form>
 				</div>
-				<div class="d-grid mt-5 mb-4">
-					<button class="btn btn-lg btn-secondary">新規登録</button>
-				</div>
-				</fieldset>
-				</form>
 			</div>
-	</div>
-	</main>
-	<div th:replace="~{common/footer :: footer_fragment}"></div>
+		</main>
+		<div th:replace="~{common/footer :: footer_fragment}"></div>
 	</div>
 </body>
 
