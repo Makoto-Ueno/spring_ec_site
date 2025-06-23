@@ -36,14 +36,13 @@ public class UserController {
 			// ▼ 一致しない場合、BindingResultにエラーを追加
 			bindingResult.rejectValue("passwordConfirm", "error.passwordConfirm", "パスワードと入力が一致しません");
 		}
-		// ▼ 追加: メールアドレスの重複チェック
-		if (userRepository.findByMail(form.getMail()) != null) {
-			bindingResult.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されています");
-		}
-
 		// ▼ バリデーションエラーがある場合、登録画面に戻る
 		if (bindingResult.hasErrors()) {
 			model.addAttribute(form);
+		}
+		// ▼ 追加: メールアドレスの重複チェック
+		if (userRepository.findByMail(form.getMail()) != null) {
+			bindingResult.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されています");
 			return "admin/user/register";
 		}
 
