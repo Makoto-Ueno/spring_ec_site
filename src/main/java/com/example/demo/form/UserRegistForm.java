@@ -20,8 +20,6 @@ public class UserRegistForm {
 
 	private String passwordConfirm;
 
-	private int type;
-
 	public int getUserId() {
 		return userId;
 	}
@@ -44,14 +42,6 @@ public class UserRegistForm {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
 	}
 
 	public String getPasswordConfirm() {
