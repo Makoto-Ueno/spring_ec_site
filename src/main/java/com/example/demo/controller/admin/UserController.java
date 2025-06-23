@@ -50,7 +50,7 @@ public class UserController {
 		user.setMail(form.getMail());
 		user.setPassword(form.getPassword());
 		// TODO:ハッシュ化未実装
-		user.setType(form.getType());
+		user.setType(1);
 		Date now = new Date();
 		user.setCreateAt(now);
 		user.setUpdateAt(now);
