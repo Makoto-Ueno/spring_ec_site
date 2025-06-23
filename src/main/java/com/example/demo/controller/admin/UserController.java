@@ -39,6 +39,7 @@ public class UserController {
 		// ▼ バリデーションエラーがある場合、登録画面に戻る
 		if (bindingResult.hasErrors()) {
 			model.addAttribute(form);
+			return "admin/user/register";
 		}
 		// ▼ 追加: メールアドレスの重複チェック
 		if (userRepository.findByMail(form.getMail()) != null) {
