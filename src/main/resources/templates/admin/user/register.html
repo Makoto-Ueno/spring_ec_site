@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common/head :: head_fragment('新規登録',~{},~{::script})}">
+	<script th:src="@{/js/common/password-mask.js}" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	<div class="contents">
+		<div th:replace="~{common/header :: header_fragment}"></div>
+		<main class="px-5 py-6">
+			<div class="container-fluid">
+				<div class="row">
+					<form class="form-control col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4 m-auto"
+						action="/admin/register" method="post" th:object="${userRegistForm}">
+						<fieldset>
+							<div>
+								<label for="mail" class="form-label mt-4">メールアドレス</label>
+								<input type="text" th:field="*{mail}" class="form-control w-100"
+									placeholder="spring@gmail.com">
+								<div class="error-text" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"
+									style="color: red;"></div>
+							</div>
+							<div>
+								<label for="password" class="form-label mt-4">パスワード</label>
+								<div class="form-control input-password">
+									<input type="password" th:field="*{password}" placeholder="6 ~ 16文字（半角英数字・記号）"
+										autocomplete="off">
+									<span class="is-mask" onclick="togglePasswordVisibility(this)"></span>
+								</div>
+								<div class="error-text" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+									style="color: red;"></div>
+							</div>
+							<div>
+								<label for="passwordConfirm" class="form-label mt-4">パスワード（確認）</label>
+								<div class="form-control input-password">
+									<input type="password" th:field="*{passwordConfirm}"
+										placeholder="6 ~ 16文字（半角英数字・記号）" autocomplete="off">
+									<span class="is-mask" onclick="togglePasswordVisibility(this)"></span>
+								</div>
+								<div class="error-text" th:if="${#fields.hasErrors('passwordConfirm')}"
+									th:errors="*{passwordConfirm}" style="color: red;"></div>
+							</div>
+							<div class="d-grid mt-5 mb-4">
+								<button class="btn btn-lg btn-secondary">新規登録</button>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</main>
+		<div th:replace="~{common/footer :: footer_fragment}"></div>
+	</div>
+</body>
+
+</html>
