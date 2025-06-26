@@ -62,9 +62,7 @@ public class UserController {
 		user.setUpdateAt(now);
 
 		userRepository.saveAndFlush(user);
-		return "redirect:/admin";
-		// TODO:ログイン画面作成後トップページに戻る
-
+		return "redirect:/admin/user/login";
 	}
 
 }
