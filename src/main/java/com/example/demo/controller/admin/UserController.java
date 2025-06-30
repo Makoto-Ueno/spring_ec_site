@@ -62,7 +62,7 @@ public class UserController {
 		user.setUpdateAt(now);
 
 		userRepository.saveAndFlush(user);
-		return "redirect:/admin/user/login";
+		return "redirect:/admin/login";
 	}
 
 }
