@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 @Entity
 public class User {
@@ -29,6 +31,24 @@ public class User {
 
 	@Column(nullable = false, name = "update_at")
 	private Date updateAt;
+
+	/**
+	 * データ登録前に共通的に実行されるメソッド
+	 */
+	@PrePersist
+	public void preInsert() {
+		Date date = new Date();
+		setCreateAt(date);
+		setUpdateAt(date);
+	}
+
+	/**
+	 * データ更新前に共通的に実行されるメソッド
+	 */
+	@PreUpdate
+	public void preUpdate() {
+		setUpdateAt(new Date());
+	}
 
 	public int getId() {
 		return id;

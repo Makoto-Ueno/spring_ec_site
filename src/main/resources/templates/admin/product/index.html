@@ -30,11 +30,12 @@
 								<img class="bg-light" th:src="@{/img/no_image.png}" alt="">
 								<div class=" card-body">
 									<h5 class="card-title">[[${product.name}]]</h5>
-									
+
 									<p th:if="${product.status} == 1" 　class="card-text text-danger">現在販売を停止しています</p>
 									<p th:if="${product.status} != 1 and ${product.stock.quantity} == 0"
 										　class="card-text text-danger">現在在庫切れです</p>
-									<p th:if="${product.status} != 1 and ${product.stock.quantity} != 0" class="card-text">¥[[${product.amount}]]
+									<p th:if="${product.status} != 1 and ${product.stock.quantity} != 0"
+										class="card-text">¥[[${product.amount}]]
 									</p>
 								</div>
 							</div>
@@ -46,7 +47,7 @@
 		<!-- ページネーション部分 -->
 		<div>
 			<ul th:if="${not #lists.isEmpty(products)}" class="pagination mb-5">
-				<li class="page-item"　th:classappend="${page.first} ? ' disabled' : ''">
+				<li class="page-item" 　th:classappend="${page.first} ? ' disabled' : ''">
 					<a class="page-link" th:href="@{/admin(page = ${page.number-1})}">&laquo;</a>
 				</li>
 				<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
@@ -54,7 +55,7 @@
 					<a class="page-link" th:href="@{/admin(page = ${i})}">[[${i+1}]]
 					</a>
 				</li>
-				<li class="page-item"　　th:classappend="${page.last} ? ' disabled' : ''">
+				<li class="page-item" 　　th:classappend="${page.last} ? ' disabled' : ''">
 					<a class="page-link" th:href="@{/admin(page = ${page.number+1})}">&raquo;</a>
 				</li>
 			</ul>

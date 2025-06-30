@@ -3,6 +3,7 @@ package com.example.demo.controller.admin;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@GetMapping("/admin/register")
 	public String registerView(Model model, UserRegistForm form) {
@@ -49,17 +53,16 @@ public class UserController {
 
 		User user = new User();
 		user.setMail(form.getMail());
-		user.setPassword(form.getPassword());
-		// TODO:ハッシュ化未実装
+		// ハッシュ化
+		var hashPassword = passwordEncoder.encode(form.getPassword());
+		user.setPassword(hashPassword);
 		user.setType(1);
 		Date now = new Date();
 		user.setCreateAt(now);
 		user.setUpdateAt(now);
 
 		userRepository.saveAndFlush(user);
-		return "redirect:/admin";
-		// TODO:ログイン画面作成後トップページに戻る
-
+		return "redirect:/admin/login";
 	}
 
 }
