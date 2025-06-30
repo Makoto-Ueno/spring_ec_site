@@ -17,7 +17,6 @@ public class UserRegistForm {
 	@Size(min = 6, max = 16, message = "6文字以上16文字以下で入力してください")
 	private String password;
 
-	@NotEmpty(message = " パスワードと入力が一致しません")
 	private String passwordConfirm;
 
 	public int getUserId() {
