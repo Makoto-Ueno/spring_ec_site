@@ -14,10 +14,11 @@ public class AdminDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	private UserRepository userRepository;
+	final int ADMIN_TYPE = 1;
 
 	@Override
 	public UserDetails loadUserByUsername(String mail) throws UsernameNotFoundException {
-		var user = userRepository.findByMailAndType(mail, "ADMIN")
+		var user = userRepository.findByMailAndType(mail, ADMIN_TYPE)
 				.orElseThrow(() -> new UsernameNotFoundException(mail));
 		String role = getRoles(user.getType());
 		return User.withUsername(user.getMail()).password(user.getPassword()).roles(role).build();
