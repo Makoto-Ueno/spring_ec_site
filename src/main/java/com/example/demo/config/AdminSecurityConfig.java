@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+
 @EnableWebSecurity
 public class AdminSecurityConfig {
 
@@ -24,10 +25,10 @@ public class AdminSecurityConfig {
 
 	@Bean
 	@Order(1)
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
 		http.securityMatcher("/admin/**")
-				.authorizeHttpRequests(
-						authorize -> authorize.requestMatchers("/admin/**", "/css/**", "/js/**").hasRole("ADMIN"))
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/admin/**", "/css/**", "/js/**")
+						.hasRole("ADMIN").anyRequest().authenticated()) // 他のURLはログイン後アクセス可能
 				.formLogin(login -> login.loginPage("/admin/login") // ログインフォームのURL
 						.loginProcessingUrl("/admin/login") // フォームのPOST先
 						.defaultSuccessUrl("/admin", true) // ログイン成功時の遷移先
