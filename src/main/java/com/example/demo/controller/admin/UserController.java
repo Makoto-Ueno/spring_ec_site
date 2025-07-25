@@ -46,7 +46,7 @@ public class UserController {
 			return "admin/user/register";
 		}
 		// ▼ 追加: メールアドレスの重複チェック
-		if (userRepository.findByMail(form.getMail()) != null) {
+		if (!userRepository.findByMail(form.getMail()).isEmpty()) {
 			bindingResult.rejectValue("mail", "error.mail", "このメールアドレスは既に使用されています");
 			return "admin/user/register";
 		}
