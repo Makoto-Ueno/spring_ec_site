@@ -26,9 +26,8 @@ public class AdminSecurityConfig {
 	@Bean
 	@Order(1)
 	SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
-		http.securityMatcher("/admin/**")
-				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/admin/**", "/css/**", "/js/**")
-						.hasRole("ADMIN").anyRequest().authenticated()) // 他のURLはログイン後アクセス可能
+		http.securityMatcher("/admin/**").authorizeHttpRequests(
+				authorize -> authorize.requestMatchers("/admin/register").permitAll().anyRequest().hasRole("ADMIN"))
 				.formLogin(login -> login.loginPage("/admin/login") // ログインフォームのURL
 						.loginProcessingUrl("/admin/login") // フォームのPOST先
 						.defaultSuccessUrl("/admin", true) // ログイン成功時の遷移先
