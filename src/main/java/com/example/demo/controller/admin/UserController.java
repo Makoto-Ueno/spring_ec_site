@@ -3,6 +3,7 @@ package com.example.demo.controller.admin;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,6 +64,14 @@ public class UserController {
 
 		userRepository.saveAndFlush(user);
 		return "redirect:/admin/login";
+	}
+
+	@GetMapping("/admin/setting")
+	public String settingView(Model model) {
+		// ログイン中のメールアドレスを取得
+		final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
+		model.addAttribute("mail", mail);
+		return "/admin/user/setting";
 	}
 
 }
