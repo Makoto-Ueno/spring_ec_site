@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common/head :: head_fragment('設定',~{},~{})}">
+</head>
+
+<body>
+	<div class="contents">
+		<div th:replace="~{common/header :: header_fragment}"></div>
+		<!-- main -->
+		<main class="px-5 py-6">
+			<div class="container-fluid">
+				<div class="row">
+					<form class="form-control col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4 m-auto"
+						th:action="@{/admin/setting/mail/edit}" method="post" th:object="${mailChangeForm}">
+						<fieldset>
+							<div>
+								<label for="email" class="form-label mt-4">新しいメールアドレス
+								</label>
+								<input type="text" th:field="*{mail}" class="form-control w-100"
+									placeholder="spring@gmail.com">
+									<p class="error-text" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"
+										style="color: red;"></p>
+							</div>
+							<div class="d-grid mt-5 mb-4">
+								<button class="btn btn-lg btn-dark">メールアドレスを変更する</button>
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</main>
+		<div th:replace="~{common/footer :: footer_fragment}"></div>
+	</div>
+</body>
+
+</html>
