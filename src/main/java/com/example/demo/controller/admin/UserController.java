@@ -151,18 +151,6 @@ public class UserController {
 			@ModelAttribute("passwordChangeForm") @Validated PassChangeForm form, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
 
-		// ▼ パスワードと確認用パスワードが一致しているかをチェック
-		if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
-			// ▼ 一致しない場合、BindingResultにエラーを追加
-			bindingResult.rejectValue("newPasswordConfirm", "error.newPasswordConfirm", "パスワードと入力が一致しません");
-		}
-
-		// ▼ バリデーションエラーがある場合、登録画面に戻る
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("passwordChangeForm", form);
-			return "admin/user/changePassword";
-		}
-
 		// ▼ ユーザー情報を取得
 		SecurityContext context = SecurityContextHolder.getContext();
 		String currentUserMail = context.getAuthentication().getName();
@@ -173,11 +161,26 @@ public class UserController {
 			return "";
 
 		}
+
 		User user = userOpt.get();
 		// パスワードエンコードにマッチズ今のユーザーのパスワードとユーザーが入力したパスワードのチェック処理
 		if (!passwordEncoder.matches(form.getNowPassword(), user.getPassword())) {
 			// ▼ 一致しない場合、BindingResultにエラーを追加
 			bindingResult.rejectValue("nowPassword", "error.nowPassword", "パスワードが違います");
+			return "admin/user/changePassword";
+		}
+
+		// ▼ パスワードと確認用パスワードが一致しているかをチェック
+		if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
+			// ▼ 一致しない場合、BindingResultにエラーを追加
+			bindingResult.rejectValue("newPasswordConfirm", "error.newPasswordConfirm", "新しいパスワードと入力が一致しません");
+			return "admin/user/changePassword";
+
+		}
+
+		// ▼ バリデーションエラーがある場合、登録画面に戻る
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("passwordChangeForm", form);
 			return "admin/user/changePassword";
 		}
 
