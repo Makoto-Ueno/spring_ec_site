@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.User;
 import com.example.demo.form.MailChangeForm;
+import com.example.demo.form.PassChangeForm;
 import com.example.demo.form.UserRegistForm;
 import com.example.demo.repository.UserRepository;
 
@@ -82,6 +83,7 @@ public class UserController {
 		// ログイン中のメールアドレスを取得
 		final String mail = SecurityContextHolder.getContext().getAuthentication().getName();
 		model.addAttribute("mail", mail);
+
 		return "/admin/user/setting";
 	}
 
@@ -134,6 +136,61 @@ public class UserController {
 				new UsernamePasswordAuthenticationToken(userd, userd.getPassword(), userd.getAuthorities()));
 
 		redirectAttributes.addFlashAttribute("Successed", true);
+		return "redirect:/admin/setting";
+	}
+
+	@GetMapping("/admin/setting/password/edit")
+	public String showChangePasswordForm(Model model) {
+		// Do not set the new password to the current password
+		model.addAttribute("passwordChangeForm", new PassChangeForm());
+		return "/admin/user/changePassword";
+	}
+
+	@PostMapping("/admin/setting/password/edit")
+	public String handleChangePassword(Model model,
+			@ModelAttribute("passwordChangeForm") @Validated PassChangeForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
+
+		// ▼ パスワードと確認用パスワードが一致しているかをチェック
+		if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
+			// ▼ 一致しない場合、BindingResultにエラーを追加
+			bindingResult.rejectValue("newPasswordConfirm", "error.newPasswordConfirm", "パスワードと入力が一致しません");
+		}
+
+		// ▼ バリデーションエラーがある場合、登録画面に戻る
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("passwordChangeForm", form);
+			return "admin/user/changePassword";
+		}
+
+		// ▼ ユーザー情報を取得
+		SecurityContext context = SecurityContextHolder.getContext();
+		String currentUserMail = context.getAuthentication().getName();
+		Optional<User> userOpt = userRepository.findByMail(currentUserMail);
+
+		if (userOpt.isEmpty()) {
+			// TODO: ユーザーが見つからなかった場合の処理
+			return "";
+
+		}
+		User user = userOpt.get();
+		// パスワードエンコードにマッチズ今のユーザーのパスワードとユーザーが入力したパスワードのチェック処理
+		if (!passwordEncoder.matches(form.getNowPassword(), user.getPassword())) {
+			// ▼ 一致しない場合、BindingResultにエラーを追加
+			bindingResult.rejectValue("nowPassword", "error.nowPassword", "パスワードが違います");
+			return "admin/user/changePassword";
+		}
+
+		// ハッシュ化
+		var hashPassword = passwordEncoder.encode(form.getNewPassword());
+		user.setPassword(hashPassword);
+		user.setType(1);
+		Date now = new Date();
+		user.setCreateAt(now);
+		user.setUpdateAt(now);
+
+		userRepository.saveAndFlush(user);
+		redirectAttributes.addFlashAttribute("successMessage", true);
 		return "redirect:/admin/setting";
 	}
 
