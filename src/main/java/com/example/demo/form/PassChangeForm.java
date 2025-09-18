@@ -14,7 +14,6 @@ public class PassChangeForm {
 	@Size(min = 6, max = 16, message = "6文字以上16文字以下で入力してください")
 	private String newPassword;
 
-	@NotBlank(message = "新しいパスワード（確認）を入力してください")
 	private String newPasswordConfirm;
 
 	public String getNewPassword() {
