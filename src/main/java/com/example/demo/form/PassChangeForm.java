@@ -1,31 +1,44 @@
 package com.example.demo.form;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class PassChangeForm {
 
-	@NotEmpty(message = " パスワードを入力してください")
+	@NotBlank(message = "現在のパスワードを入力してください")
+	private String nowPassword;
+
+	@NotBlank(message = " パスワードを入力してください")
 	@Pattern(regexp = "^[a-zA-Z0-9'!\\-\"#$%&()*,./:;?@\\[\\]^_`{|}~+<=>]+$", message = "半角英数字・記号「'-!\"#$%&()*,./:;?@[]^_`{|}~+<=>」で入力してください")
 	@Size(min = 6, max = 16, message = "6文字以上16文字以下で入力してください")
-	private String password;
+	private String newPassword;
 
-	private String passwordConfirm;
+	@NotBlank(message = "新しいパスワード（確認）を入力してください")
+	private String newPasswordConfirm;
 
-	public String getPassword() {
-		return password;
+	public String getNewPassword() {
+		return newPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 
-	public String getPasswordConfirm() {
-		return passwordConfirm;
+	public String getNewPasswordConfirm() {
+		return newPasswordConfirm;
 	}
 
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
+	public void setNewPasswordConfirm(String newPasswordConfirm) {
+		this.newPasswordConfirm = newPasswordConfirm;
 	}
+
+	public String getNowPassword() {
+		return nowPassword;
+	}
+
+	public void setNowPassword(String nowPassword) {
+		this.nowPassword = nowPassword;
+	}
+
 }
