@@ -41,15 +41,16 @@ public class AdminSecurityConfig {
 	@Bean
 	@Order(1)
 	SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
-		http.securityMatcher("/admin/**").authorizeHttpRequests(
-				authorize -> authorize.requestMatchers("/admin/register").permitAll().anyRequest().hasRole("ADMIN"))
+		http.securityMatcher("/admin/**")
+				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/admin/register", "/admin/logout").permitAll().anyRequest().hasRole("ADMIN"))
 				.formLogin(login -> login.loginPage("/admin/login") // ログインフォームのURL
 						.loginProcessingUrl("/admin/login") // フォームのPOST先
 						.defaultSuccessUrl("/admin", true) // ログイン成功時の遷移先
 						.failureUrl("/admin/login?error") // エラー時
 						.permitAll().usernameParameter("mail").passwordParameter("password"))
-				.authenticationProvider(daoAuthenticationProvider());
-
+				.authenticationProvider(daoAuthenticationProvider())
+				.logout(logout -> logout.logoutUrl("/admin/logout").logoutSuccessUrl("/admin/logout"));
 		return http.build();
 	}
 
