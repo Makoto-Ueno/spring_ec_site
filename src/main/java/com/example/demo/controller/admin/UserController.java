@@ -6,11 +6,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +27,9 @@ import com.example.demo.form.MailChangeForm;
 import com.example.demo.form.PassChangeForm;
 import com.example.demo.form.UserRegistForm;
 import com.example.demo.repository.UserRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class UserController {
@@ -195,6 +200,33 @@ public class UserController {
 		userRepository.saveAndFlush(user);
 		redirectAttributes.addFlashAttribute("successMessage", true);
 		return "redirect:/admin/setting";
+	}
+
+	@GetMapping("/admin/setting/withdrawal")
+	public String deleteView(Model model) {
+
+		return "/admin/user/withdrawal";
+	}
+
+	@PostMapping("/admin/setting/withdrawal")
+	public String deleteView(HttpServletRequest request, HttpServletResponse response) {
+		SecurityContext context = SecurityContextHolder.getContext();
+		String currentUserMail = context.getAuthentication().getName();
+		Optional<User> userOpt = userRepository.findByMail(currentUserMail);
+
+		if (userOpt.isEmpty()) {
+			// TODO: ユーザーが見つからなかった場合の処理
+			return "";
+		}
+		userRepository.delete(userOpt.get());
+
+		// Spring Security のログアウト処理を実行
+		Authentication auth = context.getAuthentication();
+		if (auth != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		}
+
+		return "redirect:/admin/logout";
 	}
 
 }
