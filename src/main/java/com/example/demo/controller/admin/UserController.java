@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.entity.User;
 import com.example.demo.form.MailChangeForm;
 import com.example.demo.form.PassChangeForm;
+import com.example.demo.form.ResetPasswordForm;
 import com.example.demo.form.UserRegistForm;
 import com.example.demo.repository.UserRepository;
 
@@ -202,6 +203,7 @@ public class UserController {
 		return "redirect:/admin/setting";
 	}
 
+	// ↓退会処理
 	@GetMapping("/admin/setting/withdrawal")
 	public String deleteView(Model model) {
 
@@ -229,4 +231,81 @@ public class UserController {
 		return "redirect:/admin/logout";
 	}
 
+	// ↓パスワードリセット処理
+	@GetMapping("/admin/reset")
+	public String resetView(Model model) {
+		model.addAttribute("mailChangeForm", new MailChangeForm());
+		return "/admin/user/reset";
+	}
+
+	@PostMapping("/admin/reset")
+	public String resetView(Model model, @ModelAttribute @Validated MailChangeForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
+
+		// バリデーションエラーがある場合は画面に戻る
+		if (bindingResult.hasErrors()) {
+			return "/admin/user/reset";
+		}
+
+		String mail = form.getMail();
+		Optional<User> userOpt = userRepository.findByMail(mail);
+
+		if (userOpt.isEmpty()) {
+			// TODO: ユーザーが見つからなかった場合の処理
+			bindingResult.rejectValue("mail", "error.mail", "メールアドレスが違います");
+			return "/admin/user/reset";
+		}
+
+		redirectAttributes.addFlashAttribute("uesrId", userOpt.get().getId());
+		return "redirect:/admin/reset/password";
+	}
+
+	@GetMapping("/admin/reset/password")
+	public String resetPasswordView(Model model) {
+		Integer userId = (Integer) model.getAttribute("uesrId");
+		ResetPasswordForm resetPasswordForm = new ResetPasswordForm();
+		resetPasswordForm.setUserId(userId);
+		model.addAttribute("resetPasswordForm", resetPasswordForm);
+		return "admin/user/resetPassword";
+	}
+
+	@PostMapping("/admin/reset/password")
+	public String resetPasswordView(Model model, @ModelAttribute @Validated ResetPasswordForm form,
+			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+		// ▼ パスワードと確認用パスワードが一致しているかをチェック
+		if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
+			// ▼ 一致しない場合、BindingResultにエラーを追加
+			bindingResult.rejectValue("newPasswordConfirm", "error.newPasswordConfirm", "パスワードと入力が一致しません");
+			return "admin/user/resetPassword";
+		}
+
+		// ▼ バリデーションエラーがある場合、登録画面に戻る
+		if (bindingResult.hasErrors()) {
+
+			model.addAttribute("resetPasswordForm", form);
+			return "admin/user/resetPassword";
+		}
+
+		// ▼ ユーザー情報を取得
+		Optional<User> userOpt = userRepository.findById(form.getUserId());
+
+		if (userOpt.isEmpty()) {
+			// TODO: ユーザーが見つからなかった場合の処理
+			return "admin/user/resetPassword";
+		}
+
+		User user = userOpt.get();
+		// ハッシュ化
+		var hashPassword = passwordEncoder.encode(form.getNewPassword());
+		user.setPassword(hashPassword);
+		user.setType(1);
+		Date now = new Date();
+		user.setCreateAt(now);
+		user.setUpdateAt(now);
+
+		userRepository.saveAndFlush(user);
+		redirectAttributes.addFlashAttribute("resetSuccessMessage", true);
+		return "redirect:/admin/login";
+	}
 }

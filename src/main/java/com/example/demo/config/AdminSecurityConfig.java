@@ -43,7 +43,8 @@ public class AdminSecurityConfig {
 	SecurityFilterChain adminSecurityFilterChain(HttpSecurity http) throws Exception {
 		http.securityMatcher("/admin/**")
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/admin/register", "/admin/logout").permitAll().anyRequest().hasRole("ADMIN"))
+						.requestMatchers("/admin/register", "/admin/logout", "/admin/reset", "/admin/reset/password") // ログイン前アクセス可能ページ
+						.permitAll().anyRequest().hasRole("ADMIN"))
 				.formLogin(login -> login.loginPage("/admin/login") // ログインフォームのURL
 						.loginProcessingUrl("/admin/login") // フォームのPOST先
 						.defaultSuccessUrl("/admin", true) // ログイン成功時の遷移先
