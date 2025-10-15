@@ -10,13 +10,18 @@
 		<div th:replace="~{common/header :: header_fragment}"></div>
 		<main class="px-5 py-6">
 			<div class="container-fluid">
-				<!-- 新規登録成功メッセージ -->
-				<!--div class="d-flex justify-content-center">
-			        <div class="alert alert-dismissible alert-success d-inline-block m-auto mb-5">
+				<div class="d-flex justify-content-center">
+					<!-- 新規登録成功メッセージ >
+			        <div th:if="${SuccessMessage} class="alert alert-dismissible alert-success d-inline-block m-auto mb-5">
 			            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 			            管理者登録しました
-			        </div>
-			    </div-->
+			        </div　-->
+					<!-- パスワードリセット成功メッセージ -->
+					<div th:if="${resetSuccessMessage}" class="alert alert-dismissible alert-success d-inline-block m-auto mb-5">
+					    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+					    パスワードをリセットしました
+					</div>
+			    </div>
 				<!-- エラーメッセージ -->
 				<div th:if="${errorMsg} != null" class="d-flex justify-content-center">
 					<div class="alert alert-dismissible alert-danger d-inline-block m-auto mb-5">
@@ -45,7 +50,7 @@
 								<button class="btn btn-lg btn-secondary">ログイン</button>
 							</div>
 							<div class="text-center my-4">
-								<a href="mail-confirm.html">パスワードを忘れた人はこちら</a>
+								<a href="/admin/reset">パスワードを忘れた人はこちら</a>
 							</div>
 						</fieldset>
 					</form>
