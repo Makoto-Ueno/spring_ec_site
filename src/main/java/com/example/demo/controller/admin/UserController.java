@@ -273,17 +273,17 @@ public class UserController {
 	public String resetPasswordView(Model model, @ModelAttribute @Validated ResetPasswordForm form,
 			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
+		// ▼ パスワードと確認用パスワードが一致しているかをチェック
+		if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
+			// ▼ 一致しない場合、BindingResultにエラーを追加
+			bindingResult.rejectValue("newPasswordConfirm", "error.newPasswordConfirm", "パスワードと入力が一致しません");
+			return "admin/user/resetPassword";
+		}
+
 		// ▼ バリデーションエラーがある場合、登録画面に戻る
 		if (bindingResult.hasErrors()) {
 
 			model.addAttribute("resetPasswordForm", form);
-			return "admin/user/resetPassword";
-		}
-
-		// ▼ パスワードと確認用パスワードが一致しているかをチェック
-		if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
-			// ▼ 一致しない場合、BindingResultにエラーを追加
-			bindingResult.rejectValue("newPasswordConfirm", "error.newPasswordConfirm", "新しいパスワードと入力が一致しません");
 			return "admin/user/resetPassword";
 		}
 
