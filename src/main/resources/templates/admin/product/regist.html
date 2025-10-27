@@ -13,18 +13,20 @@
 		<main>
 			<section class="py-5">
 				<div class="container px-3 px-lg-5 mb-5">
-					<form action="/admin/product/new" method="post" th:object="${productRegistForm}">
+					<form action="/admin/product/new" method="post" th:object="${productRegistForm}"
+						enctype="multipart/form-data">
+						<!-- Spring Security を使っている場合は CSRF トークンを追加 -->
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 						<div class="row gx-4 gx-lg-5 align-items-center">
 							<div class="col-md-6 text-center mb-5">
 								<div class="mb-md-0 img-wrapper">
-									<img id="output" class="card-img-top bg-light" th:src="@{/img/no_image.png}"
-										alt="NO IMAGE">
+									<img id="output" class="card-img-top bg-light" th:src="@{/img/no_image.png}">
 									<div class="img-edit">
 										<a class="nav-link dropdown-toggle py-1 px-2 image-edit-btn"
 											data-bs-toggle="dropdown" role="button" aria-haspopup="true"
 											aria-expanded="false">編集</a>
 										<div class="dropdown-menu">
-											<input type="file" name="image" id="image" accept="image/*"
+											<input type="file" th:field="*{image}" id="image" accept="image/*"
 												onchange="showSelectedImage(event, '#output')">
 											<label class="dropdown-item" id="btn-file" for="image">写真を選択</label>
 											<a class="dropdown-item"
