@@ -27,7 +27,7 @@
 					<div th:each="product : ${products}" class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3">
 						<a class="text-not-decoration" th:href="@{/admin/product/{id}(id=${product.productId})}">
 							<div class="card">
-								<img class="bg-light" th:src="@{/img/no_image.png}" alt="">
+								<img class="bg-light" th:src="${product.imageUrl}" alt="">
 								<div class=" card-body">
 									<h5 class="card-title">[[${product.name}]]</h5>
 

@@ -1,5 +1,7 @@
 package com.example.demo.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -27,6 +29,8 @@ public class ProductRegistForm {
 
 	private String imageUrl;
 	private int status;
+
+	private MultipartFile image;
 
 	@NotNull(message = "在庫数を登録してください")
 	@Min(value = 0, message = "在庫数をマイナスで登録することはできません")
@@ -86,6 +90,14 @@ public class ProductRegistForm {
 
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
+	}
+
+	public MultipartFile getImage() {
+		return image;
+	}
+
+	public void setImage(MultipartFile image) {
+		this.image = image;
 	}
 
 }
