@@ -1,0 +1,14 @@
+<head xmlns:th="http://www.thymeleaf.org" th:fragment="meta_header(title,links,scripts)">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<title th:text="${title}+' | Spring EC'"></title>
+
+	<link th:href="@{/css/common/bootstrap.css}" rel="stylesheet" />
+	<link th:href="@{/css/user/common/header.css}" rel="stylesheet" />
+	<script th:src="@{/js/common/bootstrap.js}" crossorigin="anonymous"></script>
+
+	<th:block th:replace="${links}" />
+	<th:block th:replace="${scripts}" />
+</head>
