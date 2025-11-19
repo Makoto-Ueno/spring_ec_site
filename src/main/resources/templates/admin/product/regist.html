@@ -13,6 +13,13 @@
 		<main>
 			<section class="py-5">
 				<div class="container px-3 px-lg-5 mb-5">
+					<div class="d-flex justify-content-center">
+
+						<div th:if="${UnSuccessed}" class="alert alert-dismissible alert-danger mb-5">
+							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+							画像のアップロードに失敗しました
+						</div>
+					</div>
 					<form action="/admin/product/new" method="post" th:object="${productRegistForm}"
 						enctype="multipart/form-data">
 						<!-- Spring Security を使っている場合は CSRF トークンを追加 -->
