@@ -26,24 +26,27 @@
 							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 							商品を販売再開しました
 						</div>
-						<!-- <div class="alert alert-dismissible alert-danger mb-5">
-		                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-		                    画像のアップロードに失敗しました
-		                </div-->
+						<div th:if="${UnSuccessed}"class="alert alert-dismissible alert-danger mb-5">
+							<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+							画像のアップロードに失敗しました
+						</div>
 					</div>
 					<form th:action="@{/admin/product/{id}(id = ${productRegistForm.productId})}" method="post"
-						th:object="${productRegistForm}" id="edit-form">
+						th:object="${productRegistForm}" id="edit-form" enctype="multipart/form-data">
+						<!-- Spring Security を使っている場合は CSRF トークンを追加 -->
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 						<div class="row gx-4 gx-lg-5 align-items-center">
 							<div class="col-md-6 text-center mb-5">
 								<div class="mb-md-0 img-wrapper">
 									<img id="output" class="card-img-top bg-light"
-										th:src="${productRegistForm.imageUrl}" />
+										th:src="${productRegistForm.imageUrl}">
+									<input type="hidden" th:field="*{imageUrl}">
 									<div class="img-edit">
 										<a class="nav-link dropdown-toggle py-1 px-2 image-edit-btn"
 											data-bs-toggle="dropdown" role="button" aria-haspopup="true"
 											aria-expanded="false">編集</a>
 										<div class="dropdown-menu">
-											<input type="file" name="image" id="image" accept="image/*"
+											<input type="file" th:field="*{image}" id="image" accept="image/*"
 												onchange="showSelectedImage(event, '#output')">
 											<label class="dropdown-item" id="btn-file" for="image">写真を選択</label>
 											<a class="dropdown-item"

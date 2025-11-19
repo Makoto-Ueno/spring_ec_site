@@ -56,32 +56,46 @@ public class ProductController {
 	public String register(Model model, @ModelAttribute @Validated ProductRegistForm form, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) throws IOException {
 
+		boolean hasFormError = false;
+		boolean hasImageRegistError = false;
 		if (bindingResult.hasErrors()) {
 			model.addAttribute(form);
-			return "admin/product/regist";
+			hasFormError = true;
 		}
+
 		// ▼ アップロードされた画像を取得
 		MultipartFile image = form.getImage();
 		String imgUrl = "/img/no_image.png"; // デフォルト
 
 		if (image != null && !image.isEmpty()) {
 
-			// 画像をアップロードするパスを指定
-			// image.getOriginalFilename()：ファイル名を取得
-			String imgPath = filePath + image.getOriginalFilename();
+			try {
+				// 画像をアップロードするパスを指定
+				// image.getOriginalFilename()：ファイル名を取得
+				String imgPath = filePath + image.getOriginalFilename();
 
-			// 画像をバイナリデータとして取得
-			byte[] content = image.getBytes();
-			// 画像を保存
-			// Files.write：ファイルの書き込み
-			// Paths.get(...)：パスを取得
-			// content：保存するデータ
-			Files.write(Paths.get(imgPath), content);
+				// 画像をバイナリデータとして取得
+				byte[] content = image.getBytes();
+				// 画像を保存
+				// Files.write：ファイルの書き込み
+				// Paths.get(...)：パスを取得
+				// content：保存するデータ
+				Files.write(Paths.get(imgPath), content);
 
-			// アップロードした画像のURLを指定
-			// HTMLで画像を読み込む際は「static」配下からパスを指定する
-			imgUrl = "/img/" + image.getOriginalFilename();
+				// アップロードした画像のURLを指定
+				// HTMLで画像を読み込む際は「static」配下からパスを指定する
+				imgUrl = "/img/" + image.getOriginalFilename();
+			}
 
+			catch (IOException e) {
+				hasImageRegistError = true;
+				model.addAttribute("UnSuccessed", true);
+			}
+
+		}
+
+		if (hasFormError || hasImageRegistError) {
+			return "admin/product/regist";
 		}
 
 		Product product = new Product();
@@ -128,7 +142,7 @@ public class ProductController {
 
 	@PostMapping("/admin/product/{id}")
 	public String change(Model model, @ModelAttribute @Validated ProductRegistForm form, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes, @PathVariable int id) {
+			RedirectAttributes redirectAttributes, @PathVariable int id) throws IOException {
 
 		if (bindingResult.hasErrors()) {
 			form.setProductId(id);
@@ -136,6 +150,36 @@ public class ProductController {
 			return "admin/product/change";
 		}
 
+		// ▼ アップロードされた画像を取得
+		MultipartFile image = form.getImage();
+		String imgUrl = "/img/no_image.png";// デフォルト
+
+		if (image != null && !image.isEmpty()) {
+
+			try {
+				// 画像をアップロードするパスを指定
+				// image.getOriginalFilename()：ファイル名を取得
+				String imgPath = filePath + image.getOriginalFilename();
+
+				// 画像をバイナリデータとして取得
+				byte[] content = image.getBytes();
+				// 画像を保存
+				// Files.write：ファイルの書き込み
+				// Paths.get(...)：パスを取得
+				// content：保存するデータ
+				Files.write(Paths.get(imgPath), content);
+
+				// アップロードした画像のURLを指定
+				// HTMLで画像を読み込む際は「static」配下からパスを指定する
+				imgUrl = "/img/" + image.getOriginalFilename();
+			}
+
+			catch (IOException e) {
+				redirectAttributes.addFlashAttribute("UnSuccessed", true);
+				return "redirect:/admin/product/{id}";
+			}
+
+		}
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
 			// TODO:商品がなかった時の処理
@@ -145,7 +189,7 @@ public class ProductController {
 		product.setName(form.getName());
 		product.setAmount(form.getAmount());
 		product.setDescription(form.getDescription());
-		product.setImageUrl(form.getImageUrl());
+		product.setImageUrl(imgUrl); // ここで保存した URL を使う
 		product.setStatus(form.getStatus());
 		// TODO:UpdadeUserを実装する
 		productRepository.saveAndFlush(product);
