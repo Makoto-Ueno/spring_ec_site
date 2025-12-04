@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,9 +25,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Product;
 import com.example.demo.entity.Stock;
+import com.example.demo.entity.User;
+
 import com.example.demo.form.ProductRegistForm;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.StockRepository;
+import com.example.demo.repository.UserRepository;
+
 
 @Controller
 public class ProductController {
@@ -38,6 +44,9 @@ public class ProductController {
 	@Autowired
 	private StockRepository stockRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+	
 	@GetMapping("/admin")
 	public String indexAdmin(Model model, @PageableDefault(page = 0, size = 20) Pageable pageable) {
 		Page<Product> productsPage = productRepository.findAll(pageable);
@@ -97,12 +106,25 @@ public class ProductController {
 		if (hasFormError || hasImageRegistError) {
 			return "admin/product/regist";
 		}
+		
+		// ▼ 認証情報（メール）から User を検索して userId を取得する
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || auth.getPrincipal() == null || !auth.isAuthenticated()) {
+			throw new IllegalStateException("認証されていません。ログインしてください。");
+		}
+
+		String currentUserMail = auth.getName(); // UserDetailsService で username に mail を設定している想定
+		User user = userRepository.findByMail(currentUserMail)
+				.orElseThrow(() -> new IllegalStateException("ログインユーザが見つかりません: " + currentUserMail));
+		int userId = user.getId();
 
 		Product product = new Product();
 		product.setName(form.getName());
 		product.setAmount(form.getAmount());
 		product.setDescription(form.getDescription());
 		product.setImageUrl(imgUrl); // ここで保存した URL を使う
+		product.setCreateUser(userId); // 作成者 ID をセット
+		product.setUpdateUser(userId); // 初回は更新者も同じ
 		product.setStatus(form.getStatus());
 		productRepository.saveAndFlush(product);
 
@@ -117,6 +139,7 @@ public class ProductController {
 
 		return "redirect:/admin";
 	}
+
 
 	@GetMapping("/admin/product/{id}")
 	public String changeView(Model model, @PathVariable int id) {
@@ -185,13 +208,26 @@ public class ProductController {
 			// TODO:商品がなかった時の処理
 			return "";
 		}
+		
+		// ▼ 認証情報（メール）から User を検索して userId を取得する
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || auth.getPrincipal() == null || !auth.isAuthenticated()) {
+			throw new IllegalStateException("認証されていません。ログインしてください。");
+		}
+
+		String currentUserMail = auth.getName(); // UserDetailsService で username に mail を設定している想定
+		User user = userRepository.findByMail(currentUserMail)
+				.orElseThrow(() -> new IllegalStateException("ログインユーザが見つかりません: " + currentUserMail));
+		int userId = user.getId();
+		
 		Product product = productOpt.get();
 		product.setName(form.getName());
 		product.setAmount(form.getAmount());
 		product.setDescription(form.getDescription());
 		product.setImageUrl(imgUrl); // ここで保存した URL を使う
 		product.setStatus(form.getStatus());
-		// TODO:UpdadeUserを実装する
+		product.setUpdateUser(userId); 
+
 		productRepository.saveAndFlush(product);
 
 		Stock stock = product.getStock();
@@ -211,9 +247,21 @@ public class ProductController {
 		if (productOpt.isEmpty()) {
 			// TODO:商品がなかった時の処理
 		}
+		
+		// ▼ 認証情報（メール）から User を検索して userId を取得する
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || auth.getPrincipal() == null || !auth.isAuthenticated()) {
+			throw new IllegalStateException("認証されていません。ログインしてください。");
+		}
+
+		String currentUserMail = auth.getName(); // UserDetailsService で username に mail を設定している想定
+		User user = userRepository.findByMail(currentUserMail)
+				.orElseThrow(() -> new IllegalStateException("ログインユーザが見つかりません: " + currentUserMail));
+		int userId = user.getId();
+		
 		Product product = productOpt.get();
 		product.setStatus(1);
-		// TODO:UpdadeUserを実装する
+		product.setUpdateUser(userId);
 
 		productRepository.saveAndFlush(product);
 
@@ -228,9 +276,21 @@ public class ProductController {
 		if (productOpt.isEmpty()) {
 			// TODO:商品がなかった時の処理
 		}
+		
+		// ▼ 認証情報（メール）から User を検索して userId を取得する
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || auth.getPrincipal() == null || !auth.isAuthenticated()) {
+			throw new IllegalStateException("認証されていません。ログインしてください。");
+		}
+
+		String currentUserMail = auth.getName(); // UserDetailsService で username に mail を設定している想定
+		User user = userRepository.findByMail(currentUserMail)
+				.orElseThrow(() -> new IllegalStateException("ログインユーザが見つかりません: " + currentUserMail));
+		int userId = user.getId();
+		
 		Product product = productOpt.get();
 		product.setStatus(0);
-		// TODO:UpdadeUserを実装する
+		product.setUpdateUser(userId);
 
 		productRepository.saveAndFlush(product);
 
