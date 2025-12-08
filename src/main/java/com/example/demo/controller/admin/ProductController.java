@@ -145,7 +145,8 @@ public class ProductController {
 	public String changeView(Model model, @PathVariable int id) {
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
-			// TODO:商品がなかった時の処理
+			//　商品が存在しない時、500エラーで500.htmlが表示される
+	        throw new RuntimeException("商品が存在しません");
 		}
 		Product product = productOpt.get();
 		ProductRegistForm form = new ProductRegistForm();
@@ -205,7 +206,6 @@ public class ProductController {
 		}
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
-			// TODO:商品がなかった時の処理
 			return "";
 		}
 		
@@ -245,7 +245,8 @@ public class ProductController {
 			RedirectAttributes redirectAttributes, @PathVariable int id) {
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
-			// TODO:商品がなかった時の処理
+			//　商品が存在しない時、500エラーで500.htmlが表示される
+	        throw new RuntimeException("商品が存在しません");
 		}
 		
 		// ▼ 認証情報（メール）から User を検索して userId を取得する
@@ -274,7 +275,8 @@ public class ProductController {
 			RedirectAttributes redirectAttributes, @PathVariable int id) {
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
-			// TODO:商品がなかった時の処理
+			//　商品が存在しない時、500エラーで500.htmlが表示される
+	        throw new RuntimeException("商品が存在しません");
 		}
 		
 		// ▼ 認証情報（メール）から User を検索して userId を取得する
