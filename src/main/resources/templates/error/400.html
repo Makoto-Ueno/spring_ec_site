@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common/head :: head_fragment('Not Found',~{},~{})}">
+
+</head>
+
+<body>
+    <div class="contents">
+
+	<div th:replace="~{common/header :: header_fragment}"></div>
+
+        <!-- main -->
+        <main class="px-5 py-6 text-center">
+            <div class="mt-5">
+                <strong class="fs-3">お探しのページは見つかりませんでした</strong>
+            </div>
+            <div class="mt-5">
+                <a href="/admin">トップページに戻る</a>
+            </div>
+        </main>
+        <!-- main -->
+
+		<div th:replace="~{common/footer :: footer_fragment}"></div>
+    </div>
+</body>
+
+</html>
