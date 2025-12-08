@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Product;
@@ -145,8 +147,8 @@ public class ProductController {
 	public String changeView(Model model, @PathVariable int id) {
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
-			//　商品が存在しない時、500エラーで500.htmlが表示される
-	        throw new RuntimeException("商品が存在しません");
+	        // ここで400エラー画面へ（400.html）遷移させる
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "商品が存在しません");
 		}
 		Product product = productOpt.get();
 		ProductRegistForm form = new ProductRegistForm();
@@ -206,7 +208,8 @@ public class ProductController {
 		}
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
-			return "";
+			//　商品が存在しない時、500エラーで500.htmlが表示される
+	        throw new RuntimeException("商品が存在しません");
 		}
 		
 		// ▼ 認証情報（メール）から User を検索して userId を取得する
