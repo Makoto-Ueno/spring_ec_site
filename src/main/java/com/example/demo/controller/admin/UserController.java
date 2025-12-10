@@ -126,9 +126,8 @@ public class UserController {
 		Optional<User> userOpt = userRepository.findByMail(currentUserMail);
 
 		if (userOpt.isEmpty()) {
-			// TODO: ユーザーが見つからなかった場合の処理
-			return "";
-
+	        // 変更しようとしたユーザーが見つからなかった時（500エラーで500.htmlが表示される）
+	        throw new RuntimeException("対象ユーザーが存在しません");
 		}
 
 		User user = userOpt.get();
@@ -163,8 +162,8 @@ public class UserController {
 		Optional<User> userOpt = userRepository.findByMail(currentUserMail);
 
 		if (userOpt.isEmpty()) {
-			// TODO: ユーザーが見つからなかった場合の処理
-			return "";
+	        // 変更しようとしたユーザーが見つからなかった時（500エラーで500.htmlが表示される）
+	        throw new RuntimeException("対象ユーザーが存在しません");
 
 		}
 
@@ -217,8 +216,8 @@ public class UserController {
 		Optional<User> userOpt = userRepository.findByMail(currentUserMail);
 
 		if (userOpt.isEmpty()) {
-			// TODO: ユーザーが見つからなかった場合の処理
-			return "";
+	        // 変更しようとしたユーザーが見つからなかった時（500エラーで500.htmlが表示される）
+	        throw new RuntimeException("対象ユーザーが存在しません");
 		}
 		userRepository.delete(userOpt.get());
 
@@ -251,7 +250,7 @@ public class UserController {
 		Optional<User> userOpt = userRepository.findByMail(mail);
 
 		if (userOpt.isEmpty()) {
-			// TODO: ユーザーが見つからなかった場合の処理
+			// メールアドレスが一致しないとき
 			bindingResult.rejectValue("mail", "error.mail", "メールアドレスが違います");
 			return "/admin/user/reset";
 		}
@@ -291,8 +290,8 @@ public class UserController {
 		Optional<User> userOpt = userRepository.findById(form.getUserId());
 
 		if (userOpt.isEmpty()) {
-			// TODO: ユーザーが見つからなかった場合の処理
-			return "admin/user/resetPassword";
+	        // 変更しようとしたユーザーが見つからなかった時（500エラーで500.htmlが表示される）
+	        throw new RuntimeException("対象ユーザーが存在しません");
 		}
 
 		User user = userOpt.get();
