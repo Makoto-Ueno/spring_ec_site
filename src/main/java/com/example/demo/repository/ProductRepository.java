@@ -12,8 +12,8 @@ import com.example.demo.entity.User;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-	Optional<Product> findByProductIdAndStatus(int productId, int status);
 
 	Page<Product> findByStatus(int status, Pageable pageable);
 
+	Page<Product> findAll(Pageable pageable);
 }
