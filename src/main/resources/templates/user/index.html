@@ -48,14 +48,18 @@
 		<!-- pagenation -->
 		<ul class="pagination mb-5" th:if="${page != null}">
 			<li class="page-item" th:classappend="${page.first} ? 'disabled' : ''">
-				<a class="page-link" th:href="@{/(page = ${page.number} - 1)}">&laquo;</a>
+				<a class="page-link"
+					th:href="@{/(page=${page.number - 1}, size=${page.size}, name=${name})}">&laquo;</a>
 			</li>
+
 			<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}" class="page-item"
 				th:classappend="(${i} == ${page.number}) ? 'active' : ''">
-				<a class="page-link" th:href="@{/(page = ${i})}" th:text="${i + 1}"></a>
+				<a class="page-link" th:href="@{/(page=${i}, size=${page.size}, name=${name})}" th:text="${i + 1}"></a>
 			</li>
+
 			<li class="page-item" th:classappend="${page.last} ? 'disabled' : ''">
-				<a class="page-link" th:href="@{/(page = ${page.number} + 1)}">&raquo;</a>
+				<a class="page-link"
+					th:href="@{/(page=${page.number + 1}, size=${page.size}, name=${name})}">&raquo;</a>
 			</li>
 		</ul>
 		<!-- pagenation -->
