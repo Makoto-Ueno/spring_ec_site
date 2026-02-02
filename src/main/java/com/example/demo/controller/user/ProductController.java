@@ -24,16 +24,21 @@ public class ProductController {
             @RequestParam(name = "name", required = false) String name,
             @PageableDefault(page = 0, size = 20) Pageable pageable) {
 
-        Page<Product> productsPage;
-        if (StringUtils.hasText(name)) {
-            // name が空でなければ検索
-            productsPage = productRepository.findByNameContainingAndStatus(name, 0, pageable);
-            model.addAttribute("name", name);
-        } else {
-            // name が空なら通常一覧
-            productsPage = productRepository.findByStatus(0, pageable);
-            model.addAttribute("name", ""); // null のままだとテンプレートで 'null' 表示されることを防ぐ
-        }
+		// name をトリムして空白のみは null 扱いにする
+		String keyword = StringUtils.hasText(name) ? name.trim() : null;
+
+		// テンプレート側で使う属性をセット
+		// header.html が ${name} を参照しているので空文字を入れておく（null 表示を避けるため）
+		model.addAttribute("name", keyword != null ? keyword : "");
+		// 検索メッセージ用に別名でも渡しておく（テンプレートが searchKeyword を参照する場合に対応）
+		model.addAttribute("searchKeyword", keyword);
+
+		Page<Product> productsPage;
+		if (keyword != null) {
+			productsPage = productRepository.findByNameContainingAndStatus(keyword, 0, pageable);
+		} else {
+			productsPage = productRepository.findByStatus(0, pageable);
+		}
 
         model.addAttribute("page", productsPage);
         model.addAttribute("products", productsPage.getContent());

@@ -15,13 +15,13 @@
 		<div class="px-5 py-5">
 			<div class="container-fluid">
 				<div class="row">
-					<th:block th:if="${products == null && searchKeyword == null}">
+					<th:block th:if="${#lists.isEmpty(products) and (searchKeyword == null or searchKeyword == '')}">
 						<h4 class="text-center">現在商品が販売されていません。</h4>
 					</th:block>
-					<th:block th:if="${products == null && searchKeyword != null}">
+					<th:block th:if="${#lists.isEmpty(products) and (searchKeyword != null and searchKeyword != '')}">
 						<h4 class="text-center">"<span th:text="${searchKeyword}"></span>"に一致する商品は見つかりませんでした。</h4>
 					</th:block>
-					<th:block th:if="${products != null}" th:each="product : ${products}">
+					<th:block th:if="${!#lists.isEmpty(products)}" th:each="product : ${products}">
 						<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2 py-3">
 							<a class="text-not-decoration" th:href="@{/{productId}(productId = ${product.productId})}">
 								<div class="card">
@@ -46,7 +46,7 @@
 
 		<!-- --------------------------- -->
 		<!-- pagenation -->
-		<ul class="pagination mb-5" th:if="${page != null}">
+		<ul class="pagination mb-5" th:if="${page != null && !#lists.isEmpty(products)}">
 			<li class="page-item" th:classappend="${page.first} ? 'disabled' : ''">
 				<a class="page-link"
 					th:href="@{/(page=${page.number - 1}, size=${page.size}, name=${name})}">&laquo;</a>
