@@ -20,37 +20,30 @@ import com.example.demo.repository.ProductRepository;
 
 @Controller("UserController")
 public class ProductController {
-	
-    @Autowired
-    private ProductRepository productRepository;
+
+	@Autowired
+	private ProductRepository productRepository;
 
 	@GetMapping("/")
 	public String topView(Model model, @PageableDefault(page = 0, size = 20) Pageable pageable) {
-        Page<Product> productsPage = productRepository.findByStatus(0, pageable);
-        model.addAttribute("page", productsPage);
-        model.addAttribute("products", productsPage.getContent());
+		Page<Product> productsPage = productRepository.findByStatus(0, pageable);
+		model.addAttribute("page", productsPage);
+		model.addAttribute("products", productsPage.getContent());
 		return "user/index";
 	}
+
 	@GetMapping("/{id}")
 	public String changeView(Model model, @PathVariable int id) {
 		Optional<Product> productOpt = productRepository.findById(id);
 		if (productOpt.isEmpty()) {
-	        // ここで400エラー画面へ（400.html）遷移させる
-	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "商品が存在しません");
+			// ここで400エラー画面へ（400.html）遷移させる
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "商品が存在しません");
 		}
 		Product product = productOpt.get();
-		ProductRegistForm form = new ProductRegistForm();
-		form.setProductId(id);
-		form.setName(product.getName());
-		form.setAmount(product.getAmount());
-		form.setDescription(product.getDescription());
-		form.setImageUrl(product.getImageUrl());
-		form.setStatus(product.getStatus());
-
 		Stock stock = product.getStock();
-		form.setQuantity(stock.getQuantity());
+		model.addAttribute("product", product);
 
-		model.addAttribute(form);
+
 		return "user/product/detail";
 	}
 }
