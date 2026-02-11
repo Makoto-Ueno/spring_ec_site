@@ -12,10 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.util.StringUtils;
 
 import com.example.demo.entity.Product;
 import com.example.demo.entity.Stock;
-import com.example.demo.form.ProductRegistForm;
 import com.example.demo.repository.ProductRepository;
 
 @Controller("UserController")
@@ -25,8 +26,25 @@ public class ProductController {
 	private ProductRepository productRepository;
 
 	@GetMapping("/")
-	public String topView(Model model, @PageableDefault(page = 0, size = 20) Pageable pageable) {
-		Page<Product> productsPage = productRepository.findByStatus(0, pageable);
+	public String listView(Model model, @RequestParam(name = "name", required = false) String name,
+			@PageableDefault(page = 0, size = 20) Pageable pageable) {
+
+		// name をトリムして空白のみは null 扱いにする
+		String keyword = StringUtils.hasText(name) ? name.trim() : null;
+
+		// テンプレート側で使う属性をセット
+		// header.html が ${name} を参照しているので空文字を入れておく（null 表示を避けるため）
+		model.addAttribute("name", keyword != null ? keyword : "");
+		// 検索メッセージ用に別名でも渡しておく（テンプレートが searchKeyword を参照する場合に対応）
+		model.addAttribute("searchKeyword", keyword);
+
+		Page<Product> productsPage;
+		if (keyword != null) {
+			productsPage = productRepository.findByNameContainingAndStatus(keyword, 0, pageable);
+		} else {
+			productsPage = productRepository.findByStatus(0, pageable);
+		}
+
 		model.addAttribute("page", productsPage);
 		model.addAttribute("products", productsPage.getContent());
 		return "user/index";
@@ -42,7 +60,6 @@ public class ProductController {
 		Product product = productOpt.get();
 		Stock stock = product.getStock();
 		model.addAttribute("product", product);
-
 
 		return "user/product/detail";
 	}
