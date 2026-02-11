@@ -1,0 +1,25 @@
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.card-img-top {
+    width: 80%;
+}
+
+img {
+    aspect-ratio: 6 / 7;
+    object-fit: contain;
+}
+
+.md-d-block {
+    display: block;
+}
+
+@media (min-width: 992px) {
+    .mt-3 {
+        margin-top: 0 !important;
+    }
+    .md-d-block {
+        display: flex !important;
+    }
+}
